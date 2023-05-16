@@ -9,6 +9,9 @@ FLAGS = -Wall -Werror -Wextra -Wpedantic -std=c++17 -fsanitize=address -fsanitiz
 tests_main: 
 	$(CC) $(FLAGS) $(TEST_DIR)tests_main.cc -o tests_main.out $(TEST_LIB)
 
+test_constructor:
+	$(CC) $(FLAGS) -o test_constructor.out s21_cpp_matrix.cc
+
 test: tests_main
 	./tests_main.out
 
