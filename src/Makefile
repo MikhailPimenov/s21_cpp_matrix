@@ -7,7 +7,7 @@ FLAGS = -Wall -Werror -Wextra -Wpedantic -std=c++17 -fsanitize=address -fsanitiz
 .PHONY: test
 
 tests_main: 
-	$(CC) $(FLAGS) $(TEST_DIR)tests_main.cc -o tests_main.out $(TEST_LIB)
+	$(CC) $(FLAGS) $(TEST_DIR)tests_main.cc s21_cpp_matrix.cc -o tests_main.out $(TEST_LIB)
 
 test_constructor:
 	$(CC) $(FLAGS) -o test_constructor.out s21_cpp_matrix.cc

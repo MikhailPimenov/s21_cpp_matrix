@@ -1,19 +1,30 @@
 #include <gtest/gtest.h>
-#include <iostream>
+#include "../s21_cpp_matrix.h"
 
-int factorial(int n) {
-	return (n == 0) || (n == 1) ? 1 : n* factorial(n - 1);
+TEST(MatrixTest, EqMatrix) {
+	S21Matrix matrix1;
+	S21Matrix matrix2;
+	EXPECT_TRUE(matrix1.EqMatrix(matrix2));
 }
 
-TEST(FactorialTest, ZeroInput) {
-	EXPECT_EQ(factorial(0), 1);
-}
+TEST(MatrixTest, SumMatrix) {
+	S21Matrix matrix1;
+	S21Matrix matrix2;
+	S21Matrix expected_matrix;
 
-TEST(FactorialTest, PositiveInput) {
-	EXPECT_EQ(factorial(1), 1);
-	EXPECT_EQ(factorial(2), 2);
-	EXPECT_EQ(factorial(3), 6);
-	EXPECT_EQ(factorial(8), 40320);
+	expected_matrix.setRows(3);
+	expected_matrix.setCols(3);
+
+	for (int i = 0; i < expected_matrix.getRows(); ++i) {
+		for (int j = 0; j < expected_matrix.getCols(); ++j) {
+			double value = 2 * matrix1.getElement(i, j);
+			expected_matrix.setElement(i, j, value);
+		}
+	}
+
+	matrix1.SumMatrix(matrix2);
+
+	EXPECT_TRUE(matrix1.EqMatrix(expected_matrix));
 }
 
 int main(int argc, char *argv[])

@@ -1,60 +1,36 @@
 #include <iostream>
 
+class InvalidMatrixException : public std::runtime_error {
+public:
+	InvalidMatrixException(const std::string& message) : std::runtime_error(message) {}
+};
+
+class DifferentMatrixDimensionsException : public std::runtime_error {
+public:
+	DifferentMatrixDimensionsException(const std::string& message) : std::runtime_error(message) {}
+};
+
 class S21Matrix {
     private:
         int rows_, cols_;
         double **matrix_;
+		static constexpr double EPSILON = 1e-7;
+		bool is_invalid_matrix() const;
+		bool are_different_sizes(const S21Matrix& other) const;
+		void count(const S21Matrix& other, char operand);
 
     public:
-
-        S21Matrix() {
-			setRows(3);
-			setCols(3);
-			setElementsConst();
-		}
-
-        ~S21Matrix() {
-			for (int i = 0; i < rows_; i++) {
-				delete [] matrix_[i];
-			}
-			delete [] matrix_;
-		}
+        S21Matrix();
+        ~S21Matrix();
 		
-		void setRows(int rows) {
-			rows_ = rows;
-		}
-
-		int getRows() const {
-			return rows_;
-		}
-		
-		void setCols(int cols) {
-			cols_ = cols;
-		}
-		
-		int getCols() const {
-			return cols_;
-		}
-
-		double getElement(int row, int col) const {
-			if (row >= 0 && row < rows_ && col >= 0 && col < cols_) {
-				return matrix_[row][col];
-			} else {
-				throw std::out_of_range("Index out of range");
-			}
-		}
-
-		void setElementsConst() {
-			matrix_ = new double*[rows_];
-			for (int i = 0; i < rows_; ++i) {
-				matrix_[i] = new double[cols_];
-			}
-			double element = 0.0;
-			for (int i = 0; i < rows_; ++i) {
-				for (int j = 0; j < cols_; ++j) {
-					matrix_[i][j] = element;
-					++element;
-				}
-			}
-		}
+        void setRows(int rows);
+        int getRows() const;
+        void setCols(int cols);
+        int getCols() const;
+        double getElement(int row, int col) const;
+		void setElement(int row, int col, double value);
+        void setElementsConst();
+		void print_out_matrix() const;
+		bool EqMatrix(const S21Matrix& other);
+		void SumMatrix(const S21Matrix& other);
 };
