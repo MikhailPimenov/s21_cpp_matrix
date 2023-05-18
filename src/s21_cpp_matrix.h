@@ -33,4 +33,6 @@ class S21Matrix {
 		void print_out_matrix() const;
 		bool EqMatrix(const S21Matrix& other);
 		void SumMatrix(const S21Matrix& other);
+		void SubMatrix(const S21Matrix& other);
+		void MultMatrix(const S21Matrix& other);
 };

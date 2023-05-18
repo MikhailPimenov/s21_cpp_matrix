@@ -100,6 +100,38 @@ void S21Matrix::SumMatrix(const S21Matrix& other) {
 	}
 }
 
+void S21Matrix::SubMatrix(const S21Matrix& other) {
+	try {
+		if (is_invalid_matrix() || other.is_invalid_matrix()) {
+			throw InvalidMatrixException("Matrix dimesions must be greater than zero");
+		} else if (are_different_sizes(other)) {
+			throw DifferentMatrixDimensionsException("Matrix dimenstions must be equal to perform sum, sub or mult operations");
+		} else {
+			count(other, '-');
+		}
+	} catch (const InvalidMatrixException& inv_e) {
+		std::cerr << "Caugth an invalid matrix exception: " << inv_e.what() << '\n';
+	} catch (const DifferentMatrixDimensionsException& diff_dim_e) {
+		std::cerr << "Caugth a different matrix dimensions exception: " << diff_dim_e.what() << '\n';
+	}
+}
+
+void S21Matrix::MultMatrix(const S21Matrix& other) {
+	try {
+		if (is_invalid_matrix() || other.is_invalid_matrix()) {
+			throw InvalidMatrixException("Matrix dimesions must be greater than zero");
+		} else if (are_different_sizes(other)) {
+			throw DifferentMatrixDimensionsException("Matrix dimenstions must be equal to perform sum, sub or mult operations");
+		} else {
+			count(other, '*');
+		}
+	} catch (const InvalidMatrixException& inv_e) {
+		std::cerr << "Caugth an invalid matrix exception: " << inv_e.what() << '\n';
+	} catch (const DifferentMatrixDimensionsException& diff_dim_e) {
+		std::cerr << "Caugth a different matrix dimensions exception: " << diff_dim_e.what() << '\n';
+	}
+}
+
 bool S21Matrix::are_different_sizes(const S21Matrix& other) const {
 	return (other.rows_ != rows_ || other.cols_ != cols_);
 }
@@ -117,6 +149,14 @@ void S21Matrix::count(const S21Matrix& other, char operand) {
 			}
 			if (operand == '-') {	
 				matrix_[row_i][col_i] = other.matrix_[row_i][col_i] - matrix_[row_i][col_i];
+			}
+			if (operand == '*') {
+				int sum_row_i = 0, current_sum = 0;
+				while (sum_row_i < cols_) {
+					current_sum += other.matrix_[row_i][col_i] * matrix_[row_i][col_i];
+					++sum_row_i;
+				}
+				matrix_[row_i][col_i] = current_sum;
 			}
 			++col_i;
 		}
