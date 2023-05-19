@@ -13,6 +13,36 @@ S21Matrix::~S21Matrix() {
     delete [] matrix_;
 }
 
+S21Matrix::S21Matrix(const S21Matrix& other) {
+	rows_ = other.rows_;
+	cols_ = other.cols_;
+
+	matrix_ = new double*[rows_];
+	for (int i = 0; i < rows_; ++i) {
+		matrix_[i] = new double[cols_];
+	}
+
+	for (int row_i = 0; row_i < rows_; ++row_i) {
+		for (int col_i = 0; col_i < cols_; ++col_i) {
+			matrix_[row_i][col_i] = other.matrix_[row_i][col_i];
+		}
+	}
+}
+// TODO: Exception when the rows or cols are incorrect
+S21Matrix(int rows, int cols) {
+	rows_ = rows;
+	cols_ = cols;
+
+	matrix_ = new double*[rows];
+	for (int row_i = 0; row_i < rows_; ++row_i) {
+		matrix_[row_i] = new double[cols_];
+		for (int col_i = 0; col_i < cols_; ++col_i) {
+			// Set the default values for the matrix
+			matrix_[row_i][col_i] = 0.0;
+		}
+	}
+}
+
 void S21Matrix::setRows(int rows) {
     rows_ = rows;
 }
@@ -91,7 +121,7 @@ void S21Matrix::SumMatrix(const S21Matrix& other) {
 		} else if (are_different_sizes(other)) {
 			throw DifferentMatrixDimensionsException("Matrix dimenstions must be equal to perform sum, sub or mult operations");
 		} else {
-			count(other, '+');
+			count(other, '+', 0.0);
 		}
 	} catch (const InvalidMatrixException& inv_e) {
 		std::cerr << "Caugth an invalid matrix exception: " << inv_e.what() << '\n';
@@ -107,7 +137,7 @@ void S21Matrix::SubMatrix(const S21Matrix& other) {
 		} else if (are_different_sizes(other)) {
 			throw DifferentMatrixDimensionsException("Matrix dimenstions must be equal to perform sum, sub or mult operations");
 		} else {
-			count(other, '-');
+			count(other, '-', 0.0);
 		}
 	} catch (const InvalidMatrixException& inv_e) {
 		std::cerr << "Caugth an invalid matrix exception: " << inv_e.what() << '\n';
@@ -123,12 +153,27 @@ void S21Matrix::MultMatrix(const S21Matrix& other) {
 		} else if (are_different_sizes(other)) {
 			throw DifferentMatrixDimensionsException("Matrix dimenstions must be equal to perform sum, sub or mult operations");
 		} else {
-			count(other, '*');
+			S21Matrix temp;
+			int result_rows = rows_, result_cols = other.cols_;
+			temp.setRows(result_rows);
+			temp.setCols(result_rows);
 		}
 	} catch (const InvalidMatrixException& inv_e) {
 		std::cerr << "Caugth an invalid matrix exception: " << inv_e.what() << '\n';
 	} catch (const DifferentMatrixDimensionsException& diff_dim_e) {
 		std::cerr << "Caugth a different matrix dimensions exception: " << diff_dim_e.what() << '\n';
+	}
+}
+
+void S21Matrix::MultNumber(const double num) {
+	try {
+		if (is_invalid_matrix()) {
+			throw InvalidMatrixException("Matrix dimesions must be greater than zero");
+		} else {
+			count(*this, 'n', num);
+		}
+	} catch (const InvalidMatrixException& inv_e) {
+		std::cerr << "Caugth an invalid matrix exception: " << inv_e.what() << '\n';
 	}
 }
 
@@ -140,7 +185,7 @@ bool S21Matrix::is_invalid_matrix() const {
 	return (rows_ < 1 || cols_ < 1); 
 }
 
-void S21Matrix::count(const S21Matrix& other, char operand) {
+void S21Matrix::count(const S21Matrix& other, char operand, double mult_num) {
 	int row_i = 0, col_i = 0;
 	while (row_i < rows_) {
 		while (col_i < cols_) {
@@ -150,13 +195,8 @@ void S21Matrix::count(const S21Matrix& other, char operand) {
 			if (operand == '-') {	
 				matrix_[row_i][col_i] = other.matrix_[row_i][col_i] - matrix_[row_i][col_i];
 			}
-			if (operand == '*') {
-				int sum_row_i = 0, current_sum = 0;
-				while (sum_row_i < cols_) {
-					current_sum += other.matrix_[row_i][col_i] * matrix_[row_i][col_i];
-					++sum_row_i;
-				}
-				matrix_[row_i][col_i] = current_sum;
+			if (operand == 'n') {
+				matrix_[row_i][col_i] = matrix_[row_i][col_i] * mult_num;
 			}
 			++col_i;
 		}

@@ -15,9 +15,10 @@ class S21Matrix {
         int rows_, cols_;
         double **matrix_;
 		static constexpr double EPSILON = 1e-7;
+	private:
 		bool is_invalid_matrix() const;
 		bool are_different_sizes(const S21Matrix& other) const;
-		void count(const S21Matrix& other, char operand);
+		void count(const S21Matrix& other, char operand, double mult_num);
 
     public:
         S21Matrix();
@@ -34,5 +35,6 @@ class S21Matrix {
 		bool EqMatrix(const S21Matrix& other);
 		void SumMatrix(const S21Matrix& other);
 		void SubMatrix(const S21Matrix& other);
+		void MultNumber(const double num);
 		void MultMatrix(const S21Matrix& other);
 };
