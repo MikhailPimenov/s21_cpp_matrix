@@ -64,46 +64,40 @@ TEST(MatrixTest, MultByNumber) {
 	EXPECT_TRUE(matrix1.EqMatrix(expected_matrix));
 }
 
-//TEST(MatrixTest, MultMatrix) {
-//	
-//	S21Matrix matrix1;
-//	matrix1.setRows(2);
-//	matrix1.setCols(3);
-//	matrix1.setElement(0, 0, 1.0);
-//	matrix1.setElement(0, 1, 2.0);
-//	matrix1.setElement(0, 1, 3.0);
-//	matrix1.setElement(1, 0, 1.0);
-//	matrix1.setElement(1, 1, 2.0);
-//	matrix1.setElement(1, 2, 3.0);
-//
-//	S21Matrix matrix2;
-//	matrix2.setRows(3);
-//	matrix2.setCols(2);
-//	matrix2.setElement(0, 0, 1.0);
-//	matrix2.setElement(0, 1, 2.0);
-//	matrix2.setElement(0, 2, 1.0);
-//	matrix2.setElement(1, 0, 2.0);
-//	matrix2.setElement(1, 1, 1.0);
-//	matrix2.setElement(1, 2, 2.0);
-//
-//	S21Matrix expected_matrix;
-//
-//	expected_matrix.setRows(2);
-//	expected_matrix.setCols(2);
-//
-//    expected_matrix.setElement(0, 0, 6.0);
-//    expected_matrix.setElement(0, 1, 12.0);
-//    expected_matrix.setElement(1, 0, 6.0);
-//    expected_matrix.setElement(1, 1, 12.0);
-//    expected_matrix.setElement(2, 2, 111);
-//
-//	matrix1.MultMatrix(matrix2);
-//
-//	EXPECT_TRUE(matrix1.EqMatrix(expected_matrix));
-//
-//	matrix1.print_out_matrix();
-//	expected_matrix.print_out_matrix();
-//}
+TEST(MatrixTest, MultMatrix) {
+	
+	S21Matrix matrix1(3, 2);
+	matrix1.setElement(0, 0, 1.0);
+	matrix1.setElement(0, 1, 2.0);
+	matrix1.setElement(1, 0, 3.0);
+	matrix1.setElement(1, 1, 1.0);
+	matrix1.setElement(2, 0, 2.0);
+	matrix1.setElement(2, 1, 3.0);
+
+	S21Matrix matrix2(2, 3);
+	matrix2.setElement(0, 0, 1.0);
+	matrix2.setElement(0, 1, 2.0);
+	matrix2.setElement(0, 2, 3.0);
+	matrix2.setElement(1, 0, 1.0);
+	matrix2.setElement(1, 1, 2.0);
+	matrix2.setElement(1, 2, 3.0);
+
+	S21Matrix expected_matrix(3, 3);
+
+    expected_matrix.setElement(0, 0, 3.0);
+    expected_matrix.setElement(0, 1, 6.0);
+    expected_matrix.setElement(0, 2, 9.0);
+	expected_matrix.setElement(1, 0, 4.0);
+    expected_matrix.setElement(1, 1, 8.0);
+    expected_matrix.setElement(1, 2, 12.0);
+	expected_matrix.setElement(2, 0, 5.0);
+    expected_matrix.setElement(2, 1, 10.0);
+    expected_matrix.setElement(2, 2, 15.0);
+
+	matrix1.MultMatrix(matrix2);
+
+	EXPECT_TRUE(matrix1.EqMatrix(expected_matrix));
+}
 
 int main(int argc, char *argv[])
 {

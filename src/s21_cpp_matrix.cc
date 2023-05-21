@@ -11,25 +11,44 @@ S21Matrix::~S21Matrix() {
         delete [] matrix_[i];
     }
     delete [] matrix_;
+	rows_ = 0;
+	cols_ = 0;
+	matrix_ = nullptr;
 }
 
 S21Matrix::S21Matrix(const S21Matrix& other) {
 	rows_ = other.rows_;
-	cols_ = other.cols_;
-
-	matrix_ = new double*[rows_];
-	for (int i = 0; i < rows_; ++i) {
-		matrix_[i] = new double[cols_];
-	}
-
-	for (int row_i = 0; row_i < rows_; ++row_i) {
-		for (int col_i = 0; col_i < cols_; ++col_i) {
-			matrix_[row_i][col_i] = other.matrix_[row_i][col_i];
-		}
-	}
+    cols_ = other.cols_;
+    matrix_ = new double*[rows_];
+    for (int row_i = 0; row_i < rows_; ++row_i) {
+        matrix_[row_i] = new double[cols_];
+        for (int col_i = 0; col_i < cols_; ++col_i) {
+            matrix_[row_i][col_i] = other.matrix_[row_i][col_i];
+        }
+    }
 }
+
+// Copy assignment operator
+S21Matrix& S21Matrix::operator=(const S21Matrix& other) {
+    if (this != &other) {
+        this->~S21Matrix();
+        
+        rows_ = other.rows_;
+        cols_ = other.cols_;
+
+        matrix_ = new double*[rows_];
+        for (int row_i = 0; row_i < rows_; ++row_i) {
+            matrix_[row_i] = new double[cols_];
+            for (int col_i = 0; col_i < cols_; ++col_i) {
+                matrix_[row_i][col_i] = other.matrix_[row_i][col_i];
+            }
+        }
+    }
+    return *this;
+}
+
 // TODO: Exception when the rows or cols are incorrect
-S21Matrix(int rows, int cols) {
+S21Matrix::S21Matrix(int rows, int cols) {
 	rows_ = rows;
 	cols_ = cols;
 
@@ -150,14 +169,23 @@ void S21Matrix::MultMatrix(const S21Matrix& other) {
 	try {
 		if (is_invalid_matrix() || other.is_invalid_matrix()) {
 			throw InvalidMatrixException("Matrix dimesions must be greater than zero");
-		} else if (are_different_sizes(other)) {
-			throw DifferentMatrixDimensionsException("Matrix dimenstions must be equal to perform sum, sub or mult operations");
+		} else if (cols_ != other.rows_) {
+			throw MultInvalidMatrixSize("Numnber of rows of the first matrix must be equal to the number of cols of the second matrix to perform the multiplication");
 		} else {
-			S21Matrix temp;
 			int result_rows = rows_, result_cols = other.cols_;
-			temp.setRows(result_rows);
-			temp.setCols(result_rows);
-		}
+			S21Matrix temp(result_rows, result_cols);
+			double current_sum = 0.0;
+			for (int read_row_i = 0; read_row_i < result_rows; ++read_row_i) {
+				for (int read_col_i = 0; read_col_i < result_cols; ++read_col_i) {
+					for (int sum_row_i = 0; sum_row_i < cols_; ++sum_row_i) {
+						current_sum += matrix_[read_row_i][sum_row_i] * other.matrix_[sum_row_i][read_col_i];
+					}
+					temp.matrix_[read_row_i][read_col_i] = current_sum;
+					current_sum = 0;
+				}
+			}
+			*this = temp;
+		} 
 	} catch (const InvalidMatrixException& inv_e) {
 		std::cerr << "Caugth an invalid matrix exception: " << inv_e.what() << '\n';
 	} catch (const DifferentMatrixDimensionsException& diff_dim_e) {
