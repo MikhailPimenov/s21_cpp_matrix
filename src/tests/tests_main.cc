@@ -99,6 +99,30 @@ TEST(MatrixTest, MultMatrix) {
 	EXPECT_TRUE(matrix1.EqMatrix(expected_matrix));
 }
 
+TEST(MatrixTest, TransposeMatrix) {
+	
+	S21Matrix matrix1(3, 2);
+	matrix1.setElement(0, 0, 1.0);
+	matrix1.setElement(0, 1, 2.0);
+	matrix1.setElement(1, 0, 3.0);
+	matrix1.setElement(1, 1, 1.0);
+	matrix1.setElement(2, 0, 2.0);
+	matrix1.setElement(2, 1, 3.0);
+
+	S21Matrix expected_matrix(2, 3);
+
+    expected_matrix.setElement(0, 0, 1.0);
+    expected_matrix.setElement(0, 1, 3.0);
+    expected_matrix.setElement(0, 2, 2.0);
+	expected_matrix.setElement(1, 0, 2.0);
+    expected_matrix.setElement(1, 1, 1.0);
+    expected_matrix.setElement(1, 2, 3.0);
+
+	S21Matrix transposed_matrix = matrix1.Transpose();
+
+	EXPECT_TRUE(transposed_matrix.EqMatrix(expected_matrix));
+}
+
 int main(int argc, char *argv[])
 {
 	::testing::InitGoogleTest(&argc, argv);

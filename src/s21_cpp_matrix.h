@@ -48,6 +48,7 @@ class S21Matrix {
 		void SubMatrix(const S21Matrix& other);
 		void MultNumber(const double num);
 		void MultMatrix(const S21Matrix& other);
+		S21Matrix Transpose();
 };
 
 #endif /* S21_CPP_MATRIX_H */

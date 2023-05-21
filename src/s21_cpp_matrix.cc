@@ -205,6 +205,16 @@ void S21Matrix::MultNumber(const double num) {
 	}
 }
 
+S21Matrix S21Matrix::Transpose() {
+	S21Matrix result(cols_, rows_);
+	for (int row_i = 0; row_i < rows_; ++row_i) {
+		for (int col_i = 0; col_i < cols_; ++col_i) {
+			result.matrix_[col_i][row_i] = matrix_[row_i][col_i];
+		}
+	}
+	return result;
+}
+
 bool S21Matrix::are_different_sizes(const S21Matrix& other) const {
 	return (other.rows_ != rows_ || other.cols_ != cols_);
 }
