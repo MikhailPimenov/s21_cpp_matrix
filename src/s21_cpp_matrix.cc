@@ -215,6 +215,55 @@ S21Matrix S21Matrix::Transpose() {
 	return result;
 }
 
+S21Matrix S21Matrix::CalcComplements() {
+	try {
+		if (is_invalid_matrix()) {
+			throw InvalidMatrixException("Matrix dimesions must be greater than zero");
+		} else if (matrix_is_not_squared()) {
+			throw NotSquaredMatrix("Matrix should be squared to perform CaclComplements");
+		} else {
+			if (rows_ == 1) {
+				S21Matrix result(1, 1);
+				result.setElement(0, 0, matrix_[0][0]);
+				return result;
+			} else if (rows_ == 2) {
+				S21Matrix result(2, 2);
+				result.setElement(0, 0, matrix_[1][1]);
+				result.setElement(0, 1, matrix_[1][0]);
+				result.setElement(1, 0, matrix_[0][1]);
+				result.setElement(1, 1, matrix_[0][0]);
+				return result;
+			} else {
+				S21Matrix temp(rows_, cols_);
+				double temp_res = 0.0;
+				for (int row_i = 0; row_i < rows_; ++row_i) {
+					for (int col_i = 0; col_i < cols_; ++col_i) {
+						// TODO get_cofactor function call
+						// TODO temp_res = get_determinant function call
+						// TODO get_algebraic_compliment function call
+						// TODO copy temp to the result matrix
+						std::cout << temp_res;
+						std::cout << "Hello world";
+					}
+				}
+				// TODO remove the temp object
+				// TODO return result
+				return temp;
+			}
+		}
+	} catch (const InvalidMatrixException& inv_e) {
+		std::cerr << "Caugth an invalid matrix exception: " << inv_e.what() << '\n';
+	} catch (const NotSquaredMatrix& not_square_e) {
+		std::cerr << "Caugth a not square matrix exception: " << not_square_e.what() << '\n';
+	}
+    // Return an empty matrix if an exception is thrown
+    return S21Matrix();
+}
+
+bool S21Matrix::matrix_is_not_squared() const {
+	return rows_ != cols_;
+}
+
 bool S21Matrix::are_different_sizes(const S21Matrix& other) const {
 	return (other.rows_ != rows_ || other.cols_ != cols_);
 }

@@ -18,6 +18,11 @@ public:
 	MultInvalidMatrixSize(const std::string& message) : std::runtime_error(message) {}
 };
 
+class NotSquaredMatrix : public std::runtime_error {
+public:
+	NotSquaredMatrix(const std::string& message) : std::runtime_error(message) {}
+};
+
 class S21Matrix {
     private:
         int rows_, cols_;
@@ -26,6 +31,7 @@ class S21Matrix {
 	private:
 		bool is_invalid_matrix() const;
 		bool are_different_sizes(const S21Matrix& other) const;
+		bool matrix_is_not_squared() const;
 		void count(const S21Matrix& other, char operand, double mult_num);
 
     public:
@@ -49,6 +55,7 @@ class S21Matrix {
 		void MultNumber(const double num);
 		void MultMatrix(const S21Matrix& other);
 		S21Matrix Transpose();
+		S21Matrix CalcComplements();
 };
 
 #endif /* S21_CPP_MATRIX_H */

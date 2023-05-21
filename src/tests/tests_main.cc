@@ -123,6 +123,73 @@ TEST(MatrixTest, TransposeMatrix) {
 	EXPECT_TRUE(transposed_matrix.EqMatrix(expected_matrix));
 }
 
+TEST(MatrixTest, CalcComplementsMatrix_1) {
+	S21Matrix input_matrix(1, 1);
+	input_matrix.setElement(0, 0, 21.0);
+
+	S21Matrix expected_result(1, 1);
+	expected_result.setElement(0, 0, 21.0);
+
+	S21Matrix actual_result = input_matrix.CalcComplements();
+
+	EXPECT_TRUE(actual_result.EqMatrix(expected_result));
+}
+
+TEST(MatrixTest, CalcComplementsMatrix_2) {
+	S21Matrix input_matrix(2, 2);
+	input_matrix.setElement(0, 0, 21.0);
+	input_matrix.setElement(0, 1, 42.0);
+	input_matrix.setElement(1, 0, 13.0);
+	input_matrix.setElement(1, 1, 420.0);
+
+	S21Matrix expected_result(2, 2);
+	expected_result.setElement(0, 0, 420.0);
+	expected_result.setElement(0, 1, 13.0);
+	expected_result.setElement(1, 0, 42.0);
+	expected_result.setElement(1, 1, 21.0);
+
+	S21Matrix actual_result = input_matrix.CalcComplements();
+	
+	std::cout << "Input:" << std::endl;
+	input_matrix.print_out_matrix();
+	std::cout << "Actual result:" << std::endl;
+	actual_result.print_out_matrix();
+	std::cout << "Expected result:" << std::endl;
+	expected_result.print_out_matrix();	
+
+	EXPECT_TRUE(actual_result.EqMatrix(expected_result));
+}
+
+//TEST(MatrixTest, CalcComplementsMatrix) {
+//	
+//	S21Matrix matrix1(3, 3);
+//	matrix1.setElement(0, 0, 1.0);
+//	matrix1.setElement(0, 1, 2.0);
+//	matrix1.setElement(0, 2, 3.0);
+//	matrix1.setElement(1, 0, 0.0);
+//	matrix1.setElement(1, 1, 4.0);
+//	matrix1.setElement(1, 2, 2.0);
+//	matrix1.setElement(2, 0, 5.0);
+//	matrix1.setElement(2, 1, 2.0);
+//	matrix1.setElement(2, 2, 1.0);
+//
+//	S21Matrix expected_matrix(3, 3);
+//
+//    expected_matrix.setElement(0, 0, 0.0);
+//    expected_matrix.setElement(0, 1, 10.0);
+//    expected_matrix.setElement(0, 2, -20.0);
+//	expected_matrix.setElement(1, 0, 4.0);
+//    expected_matrix.setElement(1, 1, -14.0);
+//    expected_matrix.setElement(1, 2, 8.0);
+//    expected_matrix.setElement(2, 0, -8.0);
+//    expected_matrix.setElement(2, 1, -2.0);
+//    expected_matrix.setElement(2, 2, 4.0);
+//
+//	S21Matrix calc_complements = matrix1.CalcComplements();
+//
+//	EXPECT_TRUE(transposed_matrix.EqMatrix(expected_matrix));
+//}
+
 int main(int argc, char *argv[])
 {
 	::testing::InitGoogleTest(&argc, argv);
