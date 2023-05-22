@@ -291,3 +291,56 @@ void S21Matrix::count(const S21Matrix& other, char operand, double mult_num) {
 		++row_i;
 	}
 }
+
+void S21Matrix::get_cofactor(S21Matrix& temp, int skip_row, int skip_col, int size) {
+	for (int temp_row_i = 0; read_row = 0; read_row_i < size; ++read_row_i) {
+		if (read_row_i == skip_row) {
+			continue;
+		}
+		for (int temp_col_i = 0, read_col_i = 0; read_col_i < size; ++read_col_i) {
+			if (read_col_i == skip_col) {
+				continue;
+			}
+			temp.matrx_[temp_row_i][temp_col_i] = matrix_[read_row_i][read_col_i];
+			++temp_col_i;
+		}
+		++temp_row_i;
+	}
+}
+
+double S21Matrix::get_determinant(double** matrix, int size) {
+	double res = 0.0;
+	if (rows_ == 1) {
+		res = matrix_[0][0];
+	} else {
+		S21Matrix temp(size - 1, size - 1);
+		int sign = 1;
+		for (int col_index = 0; col_index < size; ++col_index) {
+			get_cofactor(temp, 0, col_index, size);
+			res += sign * matrix_[0][col_index] * get_determinant(temp.matrix_, size - 1);
+			sign *= -1;
+		}
+	}
+	return res;
+}
+
+void S21Matrix::get_algebraic_complement(double* res) {
+	*res *= pow(-1.0, rows_ + cols_ + 2);
+}
+
+double S21Matrix::Determinant() {
+	if (is_invalid_matrix()) {
+		throw InvalidMatrixException("Matrix dimesions must be greater than zero");
+	} else if (matrix_is_not_squared()) {
+		throw NotSquaredMatrix("Matrix should be squared to perform CaclComplements");
+	} else {
+		double res = 0.0;
+		if (rows_ == 1) {
+				res = matrix_[0][0];
+			} else {
+				res = get_determinant(matrix_, rows_);
+			}
+			return res;
+		}
+	}
+}
