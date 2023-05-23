@@ -150,12 +150,12 @@ TEST(MatrixTest, CalcComplementsMatrix_2) {
 
 	S21Matrix actual_result = input_matrix.CalcComplements();
 	
-	std::cout << "Input:" << std::endl;
-	input_matrix.print_out_matrix();
-	std::cout << "Actual result:" << std::endl;
-	actual_result.print_out_matrix();
-	std::cout << "Expected result:" << std::endl;
-	expected_result.print_out_matrix();	
+//	std::cout << "Input:" << std::endl;
+//	input_matrix.print_out_matrix();
+//	std::cout << "Actual result:" << std::endl;
+//	actual_result.print_out_matrix();
+//	std::cout << "Expected result:" << std::endl;
+//	expected_result.print_out_matrix();	
 
 	EXPECT_TRUE(actual_result.EqMatrix(expected_result));
 }
@@ -189,6 +189,31 @@ TEST(MatrixTest, CalcComplementsMatrix_2) {
 //
 //	EXPECT_TRUE(transposed_matrix.EqMatrix(expected_matrix));
 //}
+
+TEST(MatrixTest, DeterminantMatrix) {
+	
+	S21Matrix input_matrix(3, 3);
+	input_matrix.setElement(0, 0, 21.0);
+	input_matrix.setElement(0, 1, 42.0);
+	input_matrix.setElement(0, 2, 13.0);
+	input_matrix.setElement(1, 0, 21.0);
+	input_matrix.setElement(1, 1, 42.0);
+	input_matrix.setElement(1, 2, 13.0);
+	input_matrix.setElement(2, 0, 21.0);
+	input_matrix.setElement(2, 1, 42.0);
+	input_matrix.setElement(2, 2, 13.0);
+
+	double expected_result = 0.0;
+
+	double actual_result = input_matrix.Determinant();
+
+	std::cout << "Input:" << std::endl;
+	input_matrix.print_out_matrix();
+	std::cout << "Actual result: " << actual_result << std::endl;
+	std::cout << "Expected result: " << expected_result << std::endl;
+
+	ASSERT_DOUBLE_EQ(expected_result, actual_result);
+}
 
 int main(int argc, char *argv[])
 {

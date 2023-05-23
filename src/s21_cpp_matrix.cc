@@ -235,19 +235,21 @@ S21Matrix S21Matrix::CalcComplements() {
 				return result;
 			} else {
 				S21Matrix temp(rows_, cols_);
-				double temp_res = 0.0;
-				for (int row_i = 0; row_i < rows_; ++row_i) {
-					for (int col_i = 0; col_i < cols_; ++col_i) {
-						// TODO get_cofactor function call
-						// TODO temp_res = get_determinant function call
-						// TODO get_algebraic_compliment function call
-						// TODO copy temp to the result matrix
-						std::cout << temp_res;
-						std::cout << "Hello world";
-					}
-				}
-				// TODO remove the temp object
-				// TODO return result
+				//double temp_res = 0.0;
+				//S21Matrix temp(
+				//for (int row_i = 0; row_i < rows_; ++row_i) {
+				//	for (int col_i = 0; col_i < cols_; ++col_i) {
+				//		// TODO get_cofactor function call
+				//		//get_cofactor(
+				//		// TODO temp_res = get_determinant function call
+				//		// TODO get_algebraic_compliment function call
+				//		// TODO copy temp to the result matrix
+				//		std::cout << temp_res;
+				//		std::cout << "Hello world";
+				//	}
+				//}
+				//// TODO remove the temp object
+				//// TODO return result
 				return temp;
 			}
 		}
@@ -292,8 +294,8 @@ void S21Matrix::count(const S21Matrix& other, char operand, double mult_num) {
 	}
 }
 
-void S21Matrix::get_cofactor(S21Matrix& temp, int skip_row, int skip_col, int size) {
-	for (int temp_row_i = 0; read_row = 0; read_row_i < size; ++read_row_i) {
+void S21Matrix::get_cofactor(S21Matrix& temp, int skip_row, int skip_col, int size) const {
+	for (int temp_row_i = 0, read_row_i = 0; read_row_i < size; ++read_row_i) {
 		if (read_row_i == skip_row) {
 			continue;
 		}
@@ -301,23 +303,23 @@ void S21Matrix::get_cofactor(S21Matrix& temp, int skip_row, int skip_col, int si
 			if (read_col_i == skip_col) {
 				continue;
 			}
-			temp.matrx_[temp_row_i][temp_col_i] = matrix_[read_row_i][read_col_i];
+			temp.matrix_[temp_row_i][temp_col_i] = matrix_[read_row_i][read_col_i];
 			++temp_col_i;
 		}
 		++temp_row_i;
 	}
 }
 
-double S21Matrix::get_determinant(double** matrix, int size) {
+double S21Matrix::get_determinant(const S21Matrix& matrix, int size) {
 	double res = 0.0;
 	if (rows_ == 1) {
-		res = matrix_[0][0];
-	} else {
+		res = matrix.matrix_[0][0];
+	} else if (size > 1) {
 		S21Matrix temp(size - 1, size - 1);
 		int sign = 1;
 		for (int col_index = 0; col_index < size; ++col_index) {
-			get_cofactor(temp, 0, col_index, size);
-			res += sign * matrix_[0][col_index] * get_determinant(temp.matrix_, size - 1);
+			matrix.get_cofactor(temp, 0, col_index, size);
+			res += sign * matrix.matrix_[0][col_index] * get_determinant(temp, size - 1);
 			sign *= -1;
 		}
 	}
@@ -337,10 +339,9 @@ double S21Matrix::Determinant() {
 		double res = 0.0;
 		if (rows_ == 1) {
 				res = matrix_[0][0];
-			} else {
-				res = get_determinant(matrix_, rows_);
-			}
-			return res;
+		} else {
+			res = get_determinant(*this, rows_);
 		}
+		return res;
 	}
 }
