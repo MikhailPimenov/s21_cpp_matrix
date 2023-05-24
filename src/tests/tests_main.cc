@@ -160,35 +160,35 @@ TEST(MatrixTest, CalcComplementsMatrix_2) {
 	EXPECT_TRUE(actual_result.EqMatrix(expected_result));
 }
 
-//TEST(MatrixTest, CalcComplementsMatrix) {
-//	
-//	S21Matrix matrix1(3, 3);
-//	matrix1.setElement(0, 0, 1.0);
-//	matrix1.setElement(0, 1, 2.0);
-//	matrix1.setElement(0, 2, 3.0);
-//	matrix1.setElement(1, 0, 0.0);
-//	matrix1.setElement(1, 1, 4.0);
-//	matrix1.setElement(1, 2, 2.0);
-//	matrix1.setElement(2, 0, 5.0);
-//	matrix1.setElement(2, 1, 2.0);
-//	matrix1.setElement(2, 2, 1.0);
-//
-//	S21Matrix expected_matrix(3, 3);
-//
-//    expected_matrix.setElement(0, 0, 0.0);
-//    expected_matrix.setElement(0, 1, 10.0);
-//    expected_matrix.setElement(0, 2, -20.0);
-//	expected_matrix.setElement(1, 0, 4.0);
-//    expected_matrix.setElement(1, 1, -14.0);
-//    expected_matrix.setElement(1, 2, 8.0);
-//    expected_matrix.setElement(2, 0, -8.0);
-//    expected_matrix.setElement(2, 1, -2.0);
-//    expected_matrix.setElement(2, 2, 4.0);
-//
-//	S21Matrix calc_complements = matrix1.CalcComplements();
-//
-//	EXPECT_TRUE(transposed_matrix.EqMatrix(expected_matrix));
-//}
+TEST(MatrixTest, CalcComplementsMatrix) {
+	
+	S21Matrix input_matrix(3, 3);
+	input_matrix.setElement(0, 0, 1.0);
+	input_matrix.setElement(0, 1, 2.0);
+	input_matrix.setElement(0, 2, 3.0);
+	input_matrix.setElement(1, 0, 1.0);
+	input_matrix.setElement(1, 1, 3.0);
+	input_matrix.setElement(1, 2, 2.0);
+	input_matrix.setElement(2, 0, 5.0);
+	input_matrix.setElement(2, 1, 2.0);
+	input_matrix.setElement(2, 2, 1.0);
+
+	S21Matrix expected_matrix(3, 3);
+
+    expected_matrix.setElement(0, 0, -1.0);
+    expected_matrix.setElement(0, 1, 9.0);
+    expected_matrix.setElement(0, 2, -13.0);
+	expected_matrix.setElement(1, 0, 4.0);
+    expected_matrix.setElement(1, 1, -14.0);
+    expected_matrix.setElement(1, 2, 8.0);
+    expected_matrix.setElement(2, 0, -5.0);
+    expected_matrix.setElement(2, 1, 1.0);
+    expected_matrix.setElement(2, 2, 1.0);
+
+	S21Matrix actual_result = input_matrix.CalcComplements();
+
+	EXPECT_TRUE(actual_result.EqMatrix(expected_matrix));
+}
 
 TEST(MatrixTest, DeterminantMatrix) {
 	
@@ -206,11 +206,6 @@ TEST(MatrixTest, DeterminantMatrix) {
 	double expected_result = 0.0;
 
 	double actual_result = input_matrix.Determinant();
-
-	std::cout << "Input:" << std::endl;
-	input_matrix.print_out_matrix();
-	std::cout << "Actual result: " << actual_result << std::endl;
-	std::cout << "Expected result: " << expected_result << std::endl;
 
 	ASSERT_DOUBLE_EQ(expected_result, actual_result);
 }

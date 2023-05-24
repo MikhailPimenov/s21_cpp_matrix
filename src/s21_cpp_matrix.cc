@@ -234,23 +234,18 @@ S21Matrix S21Matrix::CalcComplements() {
 				result.setElement(1, 1, matrix_[0][0]);
 				return result;
 			} else {
-				S21Matrix temp(rows_, cols_);
-				//double temp_res = 0.0;
-				//S21Matrix temp(
-				//for (int row_i = 0; row_i < rows_; ++row_i) {
-				//	for (int col_i = 0; col_i < cols_; ++col_i) {
-				//		// TODO get_cofactor function call
-				//		//get_cofactor(
-				//		// TODO temp_res = get_determinant function call
-				//		// TODO get_algebraic_compliment function call
-				//		// TODO copy temp to the result matrix
-				//		std::cout << temp_res;
-				//		std::cout << "Hello world";
-				//	}
-				//}
-				//// TODO remove the temp object
-				//// TODO return result
-				return temp;
+				S21Matrix res_matrix(rows_, cols_);
+				double temp_res = 0.0;
+				for (int row_i = 0; row_i < rows_; ++row_i) {
+					for (int col_i = 0; col_i < cols_; ++col_i) {
+						S21Matrix temp(rows_ - 1, cols_ - 1);
+						get_cofactor(temp, row_i, col_i, rows_);
+						temp_res = get_determinant(temp, temp.rows_);
+						get_algebraic_complement(&temp_res, row_i, col_i);
+						res_matrix.setElement(row_i, col_i, temp_res);
+					}
+				}
+				return res_matrix;
 			}
 		}
 	} catch (const InvalidMatrixException& inv_e) {
@@ -312,22 +307,22 @@ void S21Matrix::get_cofactor(S21Matrix& temp, int skip_row, int skip_col, int si
 
 double S21Matrix::get_determinant(const S21Matrix& matrix, int size) {
 	double res = 0.0;
-	if (rows_ == 1) {
+	if (size == 1) {
 		res = matrix.matrix_[0][0];
 	} else if (size > 1) {
 		S21Matrix temp(size - 1, size - 1);
 		int sign = 1;
 		for (int col_index = 0; col_index < size; ++col_index) {
 			matrix.get_cofactor(temp, 0, col_index, size);
-			res += sign * matrix.matrix_[0][col_index] * get_determinant(temp, size - 1);
+			res += sign * matrix.matrix_[0][col_index] * get_determinant(temp, temp.rows_);
 			sign *= -1;
 		}
 	}
 	return res;
 }
 
-void S21Matrix::get_algebraic_complement(double* res) {
-	*res *= pow(-1.0, rows_ + cols_ + 2);
+void S21Matrix::get_algebraic_complement(double* res, int row_i, int col_i) {
+	*res *= pow(-1.0, row_i + col_i + 2);
 }
 
 double S21Matrix::Determinant() {

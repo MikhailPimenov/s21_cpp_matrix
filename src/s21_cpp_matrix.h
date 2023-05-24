@@ -36,7 +36,7 @@ class S21Matrix {
 		void count(const S21Matrix& other, char operand, double mult_num);
 		void get_cofactor(S21Matrix& temp, int skip_row, int skip_col, int size) const;
 		double get_determinant(const S21Matrix& matrix, int size);
-		void get_algebraic_complement(double* res);
+		void get_algebraic_complement(double* res, int row_i, int col_i);
 
     public:
         S21Matrix();
