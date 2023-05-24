@@ -190,7 +190,7 @@ TEST(MatrixTest, CalcComplementsMatrix) {
 	EXPECT_TRUE(actual_result.EqMatrix(expected_matrix));
 }
 
-TEST(MatrixTest, DeterminantMatrix) {
+TEST(MatrixTest, DeterminantMatrix00) {
 	
 	S21Matrix input_matrix(3, 3);
 	input_matrix.setElement(0, 0, 21.0);
@@ -208,6 +208,102 @@ TEST(MatrixTest, DeterminantMatrix) {
 	double actual_result = input_matrix.Determinant();
 
 	ASSERT_DOUBLE_EQ(expected_result, actual_result);
+}
+
+TEST(MatrixTest, DeterminantMatrix01) {
+	
+	S21Matrix input_matrix(3, 3);
+	input_matrix.setElement(0, 0, 2.0);
+	input_matrix.setElement(0, 1, 5.0);
+	input_matrix.setElement(0, 2, 7.0);
+	input_matrix.setElement(1, 0, 6.0);
+	input_matrix.setElement(1, 1, 3.0);
+	input_matrix.setElement(1, 2, 4.0);
+	input_matrix.setElement(2, 0, 5.0);
+	input_matrix.setElement(2, 1, -2.0);
+	input_matrix.setElement(2, 2, -3.0);
+
+	double expected_result = -1.0;
+
+	double actual_result = input_matrix.Determinant();
+
+	ASSERT_DOUBLE_EQ(expected_result, actual_result);
+}
+
+TEST(MatrixTest, InverseMatrix00) {
+	
+	S21Matrix input(3, 3);
+	input.setElement(0, 0, 2.0);
+	input.setElement(0, 1, 5.0);
+	input.setElement(0, 2, 7.0);
+	input.setElement(1, 0, 6.0);
+	input.setElement(1, 1, 3.0);
+	input.setElement(1, 2, 4.0);
+	input.setElement(2, 0, 5.0);
+	input.setElement(2, 1, -2.0);
+	input.setElement(2, 2, -3.0);
+
+	S21Matrix expected(3, 3);
+
+    expected.setElement(0, 0, 1.0);
+    expected.setElement(0, 1, -1.0);
+    expected.setElement(0, 2, 1.0);
+	expected.setElement(1, 0, -38.0);
+    expected.setElement(1, 1, 41.0);
+    expected.setElement(1, 2, -34.0);
+    expected.setElement(2, 0, 27.0);
+    expected.setElement(2, 1, -29.0);
+    expected.setElement(2, 2, 24.0);
+
+	S21Matrix actual = input.InverseMatrix();
+
+	EXPECT_TRUE(actual.EqMatrix(expected));
+}
+
+TEST(MatrixTest, InverseMatrixZeroException) {
+	
+	S21Matrix input(3, 3);
+	input.setElement(0, 0, 1.0);
+	input.setElement(0, 1, 2.0);
+	input.setElement(0, 2, 3.0);
+	input.setElement(1, 0, 4.0);
+	input.setElement(1, 1, 5.0);
+	input.setElement(1, 2, 6.0);
+	input.setElement(2, 0, 7.0);
+	input.setElement(2, 1, 8.0);
+	input.setElement(2, 2, 9.0);
+
+	EXPECT_THROW(input.InverseMatrix(), ZeroDeterminantException);
+	// TODO: Check if the initial matrix is null;
+}
+
+TEST(MatrixTest, MovementConstructorTest) {
+	
+	S21Matrix input(3, 3);
+	input.setElement(0, 0, 1.0);
+	input.setElement(0, 1, 2.0);
+	input.setElement(0, 2, 3.0);
+	input.setElement(1, 0, 4.0);
+	input.setElement(1, 1, 5.0);
+	input.setElement(1, 2, 6.0);
+	input.setElement(2, 0, 7.0);
+	input.setElement(2, 1, 8.0);
+	input.setElement(2, 2, 9.0);
+
+	S21Matrix expected(3, 3);
+	expected.setElement(0, 0, 1.0);
+	expected.setElement(0, 1, 2.0);
+	expected.setElement(0, 2, 3.0);
+	expected.setElement(1, 0, 4.0);
+	expected.setElement(1, 1, 5.0);
+	expected.setElement(1, 2, 6.0);
+	expected.setElement(2, 0, 7.0);
+	expected.setElement(2, 1, 8.0);
+	expected.setElement(2, 2, 9.0);
+
+	S21Matrix actual(std::move(input));
+
+	EXPECT_TRUE(actual.EqMatrix(expected));
 }
 
 int main(int argc, char *argv[])

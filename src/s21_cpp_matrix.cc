@@ -28,6 +28,13 @@ S21Matrix::S21Matrix(const S21Matrix& other) {
     }
 }
 
+S21Matrix::S21Matrix(S21Matrix&& other)
+	: rows_(other.rows_), cols_(other.cols_), matrix_(other.matrix_) {
+	other.rows_ = 0;
+	other.cols_ = 0;
+	other.matrix_ = nullptr;
+}
+
 // Copy assignment operator
 S21Matrix& S21Matrix::operator=(const S21Matrix& other) {
     if (this != &other) {
@@ -254,6 +261,35 @@ S21Matrix S21Matrix::CalcComplements() {
 		std::cerr << "Caugth a not square matrix exception: " << not_square_e.what() << '\n';
 	}
     // Return an empty matrix if an exception is thrown
+    return S21Matrix();
+}
+
+S21Matrix S21Matrix::InverseMatrix() {
+	try {
+		if (is_invalid_matrix()) {
+			throw InvalidMatrixException("Matrix dimesions must be greater than zero");
+		} else if (matrix_is_not_squared()) {
+			throw NotSquaredMatrix("Matrix should be squared to perform CaclComplements");
+		// TODO: Exception if the deteminant of the matrix is 0
+		} else {
+				double det_res = 0.0;
+				det_res = this->Determinant();
+				if (fabs(det_res) < EPSILON) {
+					throw ZeroDeterminantException("For InverseMatrix calculation the deteminant of the matrix shouldn't be equal to zero");
+				} else {
+					S21Matrix temp_first(rows_, cols_);
+					S21Matrix temp_second(rows_, cols_);
+					temp_first = this->CalcComplements();
+					temp_second = temp_first.Transpose();
+					temp_second.MultNumber(1.0 / det_res);
+					return temp_second;
+				}
+			}
+	} catch (const InvalidMatrixException& inv_e) {
+		std::cerr << "Caugth an invalid matrix exception: " << inv_e.what() << '\n';
+	} catch (const NotSquaredMatrix& not_square_e) {
+		std::cerr << "Caugth a not square matrix exception: " << not_square_e.what() << '\n';
+	}
     return S21Matrix();
 }
 

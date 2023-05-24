@@ -24,6 +24,11 @@ public:
 	NotSquaredMatrix(const std::string& message) : std::runtime_error(message) {}
 };
 
+class ZeroDeterminantException : public std::runtime_error {
+public:
+	ZeroDeterminantException(const std::string& message) : std::runtime_error(message) {}
+};
+
 class S21Matrix {
     private:
         int rows_, cols_;
@@ -43,6 +48,8 @@ class S21Matrix {
         S21Matrix(int rows, int cols);
 		~S21Matrix();
 		S21Matrix(const S21Matrix& other);
+		S21Matrix(S21Matrix&& other);
+
 		S21Matrix& operator=(const S21Matrix& other);
 		
         void setRows(int rows);
@@ -61,6 +68,7 @@ class S21Matrix {
 		S21Matrix Transpose();
 		S21Matrix CalcComplements();
 		double Determinant();
+		S21Matrix InverseMatrix();
 };
 
 #endif /* S21_CPP_MATRIX_H */
