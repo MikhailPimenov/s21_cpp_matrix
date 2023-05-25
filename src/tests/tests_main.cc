@@ -277,6 +277,71 @@ TEST(MatrixTest, InverseMatrixZeroException) {
 	// TODO: Check if the initial matrix is null;
 }
 
+TEST(MatrixTest, BasicConstructorTest) {
+	
+	S21Matrix actual;
+
+	S21Matrix expected(3, 3);
+	expected.setElement(0, 0, 0.0);
+	expected.setElement(0, 1, 1.0);
+	expected.setElement(0, 2, 2.0);
+	expected.setElement(1, 0, 3.0);
+	expected.setElement(1, 1, 4.0);
+	expected.setElement(1, 2, 5.0);
+	expected.setElement(2, 0, 6.0);
+	expected.setElement(2, 1, 7.0);
+	expected.setElement(2, 2, 8.0);
+
+	EXPECT_TRUE(actual.EqMatrix(expected));
+}
+
+TEST(MatrixTest, ParametrizedConstructorTest) {
+	
+	S21Matrix actual(3, 3);
+
+	S21Matrix expected(3, 3);
+	expected.setElement(0, 0, 0.0);
+	expected.setElement(0, 1, 0.0);
+	expected.setElement(0, 2, 0.0);
+	expected.setElement(1, 0, 0.0);
+	expected.setElement(1, 1, 0.0);
+	expected.setElement(1, 2, 0.0);
+	expected.setElement(2, 0, 0.0);
+	expected.setElement(2, 1, 0.0);
+	expected.setElement(2, 2, 0.0);
+
+	EXPECT_TRUE(actual.EqMatrix(expected));
+}
+
+TEST(MatrixTest, CopyConstructorTest) {
+	
+	S21Matrix input(3, 3);
+	input.setElement(0, 0, 1.0);
+	input.setElement(0, 1, 2.0);
+	input.setElement(0, 2, 3.0);
+	input.setElement(1, 0, 4.0);
+	input.setElement(1, 1, 5.0);
+	input.setElement(1, 2, 6.0);
+	input.setElement(2, 0, 7.0);
+	input.setElement(2, 1, 8.0);
+	input.setElement(2, 2, 9.0);
+
+	S21Matrix expected(3, 3);
+	expected.setElement(0, 0, 1.0);
+	expected.setElement(0, 1, 2.0);
+	expected.setElement(0, 2, 3.0);
+	expected.setElement(1, 0, 4.0);
+	expected.setElement(1, 1, 5.0);
+	expected.setElement(1, 2, 6.0);
+	expected.setElement(2, 0, 7.0);
+	expected.setElement(2, 1, 8.0);
+	expected.setElement(2, 2, 9.0);
+
+	S21Matrix actual(input);
+
+	EXPECT_TRUE(actual.EqMatrix(expected));
+}
+
 TEST(MatrixTest, MovementConstructorTest) {
 	
 	S21Matrix input(3, 3);
@@ -304,6 +369,30 @@ TEST(MatrixTest, MovementConstructorTest) {
 	S21Matrix actual(std::move(input));
 
 	EXPECT_TRUE(actual.EqMatrix(expected));
+}
+
+TEST(MatrixTest, DestructorTest) {
+	
+	S21Matrix input(3, 3);
+	input.setElement(0, 0, 1.0);
+	input.setElement(0, 1, 2.0);
+	input.setElement(0, 2, 3.0);
+	input.setElement(1, 0, 4.0);
+	input.setElement(1, 1, 5.0);
+	input.setElement(1, 2, 6.0);
+	input.setElement(2, 0, 7.0);
+	input.setElement(2, 1, 8.0);
+	input.setElement(2, 2, 9.0);
+
+	input.~S21Matrix();
+
+	int rows = input.getRows();
+	int cols = input.getCols();
+	bool is_null = input.matrix_is_null();
+	
+	ASSERT_EQ(rows, 0);
+	ASSERT_EQ(cols, 0);
+	EXPECT_TRUE(is_null);
 }
 
 int main(int argc, char *argv[])

@@ -16,6 +16,10 @@ S21Matrix::~S21Matrix() {
 	matrix_ = nullptr;
 }
 
+bool S21Matrix::matrix_is_null() const {
+	return (matrix_ == nullptr);
+}
+
 S21Matrix::S21Matrix(const S21Matrix& other) {
 	rows_ = other.rows_;
     cols_ = other.cols_;

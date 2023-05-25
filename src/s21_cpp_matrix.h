@@ -60,6 +60,8 @@ class S21Matrix {
 		void setElement(int row, int col, double value);
         void setElementsConst();
 		void print_out_matrix() const;
+		bool matrix_is_null() const;
+		
 		bool EqMatrix(const S21Matrix& other);
 		void SumMatrix(const S21Matrix& other);
 		void SubMatrix(const S21Matrix& other);
