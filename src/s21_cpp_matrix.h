@@ -50,8 +50,18 @@ class S21Matrix {
 		S21Matrix(const S21Matrix& other);
 		S21Matrix(S21Matrix&& other);
 
+		S21Matrix& operator+(const S21Matrix& other);
+		S21Matrix& operator-(const S21Matrix& other);
+		S21Matrix& operator*(const S21Matrix& other);
+		S21Matrix& operator*(const double num);
+		bool operator==(const S21Matrix& other);
 		S21Matrix& operator=(const S21Matrix& other);
-		
+		S21Matrix& operator+=(const S21Matrix& other);
+		S21Matrix& operator-=(const S21Matrix& other);
+		S21Matrix& operator*=(const S21Matrix& other);
+		S21Matrix& operator*=(const double num);
+		double operator()(int i, int j);
+
         void setRows(int rows);
         int getRows() const;
         void setCols(int cols);

@@ -27,6 +27,46 @@ TEST(MatrixTest, SumMatrix) {
 	EXPECT_TRUE(matrix1.EqMatrix(expected_matrix));
 }
 
+TEST(MatrixTest, SumOperatorMatrix) {
+	S21Matrix matrix1;
+	S21Matrix matrix2;
+	S21Matrix expected_matrix;
+
+	expected_matrix.setRows(3);
+	expected_matrix.setCols(3);
+
+	for (int i = 0; i < expected_matrix.getRows(); ++i) {
+		for (int j = 0; j < expected_matrix.getCols(); ++j) {
+			double value = 2 * matrix1.getElement(i, j);
+			expected_matrix.setElement(i, j, value);
+		}
+	}
+
+	matrix1 + matrix2;
+
+	EXPECT_TRUE(matrix1.EqMatrix(expected_matrix));
+}
+
+TEST(MatrixTest, AdditionAssignmentOperatorMatrix) {
+	S21Matrix matrix1;
+	S21Matrix matrix2;
+	S21Matrix expected_matrix;
+
+	expected_matrix.setRows(3);
+	expected_matrix.setCols(3);
+
+	for (int i = 0; i < expected_matrix.getRows(); ++i) {
+		for (int j = 0; j < expected_matrix.getCols(); ++j) {
+			double value = 2 * matrix1.getElement(i, j);
+			expected_matrix.setElement(i, j, value);
+		}
+	}
+
+	matrix1 += matrix2;
+
+	EXPECT_TRUE(matrix1.EqMatrix(expected_matrix));
+}
+
 TEST(MatrixTest, SubMatrix) {
 	S21Matrix matrix1;
 	S21Matrix matrix2;
@@ -46,6 +86,44 @@ TEST(MatrixTest, SubMatrix) {
 	EXPECT_TRUE(matrix1.EqMatrix(expected_matrix));
 }
 
+TEST(MatrixTest, SubOperatorMatrix) {
+	S21Matrix matrix1;
+	S21Matrix matrix2;
+	S21Matrix expected_matrix;
+
+	expected_matrix.setRows(3);
+	expected_matrix.setCols(3);
+
+	for (int i = 0; i < expected_matrix.getRows(); ++i) {
+		for (int j = 0; j < expected_matrix.getCols(); ++j) {
+			expected_matrix.setElement(i, j, 0.0);
+		}
+	}
+
+	matrix1 - matrix2;
+
+	EXPECT_TRUE(matrix1.EqMatrix(expected_matrix));
+}
+
+TEST(MatrixTest, DifferenceAssignmentOperatorMatrix) {
+	S21Matrix matrix1;
+	S21Matrix matrix2;
+	S21Matrix expected_matrix;
+
+	expected_matrix.setRows(3);
+	expected_matrix.setCols(3);
+
+	for (int i = 0; i < expected_matrix.getRows(); ++i) {
+		for (int j = 0; j < expected_matrix.getCols(); ++j) {
+			expected_matrix.setElement(i, j, 0.0);
+		}
+	}
+
+	matrix1 -= matrix2;
+
+	EXPECT_TRUE(matrix1.EqMatrix(expected_matrix));
+}
+
 TEST(MatrixTest, MultByNumber) {
 	S21Matrix matrix1;
 	S21Matrix expected_matrix;
@@ -60,6 +138,42 @@ TEST(MatrixTest, MultByNumber) {
 	}
 
 	matrix1.MultNumber(3.0);
+
+	EXPECT_TRUE(matrix1.EqMatrix(expected_matrix));
+}
+
+TEST(MatrixTest, MultByNumberOperator) {
+	S21Matrix matrix1;
+	S21Matrix expected_matrix;
+
+	expected_matrix.setRows(3);
+	expected_matrix.setCols(3);
+
+	for (int i = 0; i < expected_matrix.getRows(); ++i) {
+		for (int j = 0; j < expected_matrix.getCols(); ++j) {
+			expected_matrix.setElement(i, j, matrix1.getElement(i, j) * 3.0);
+		}
+	}
+
+	matrix1 * 3.0;
+
+	EXPECT_TRUE(matrix1.EqMatrix(expected_matrix));
+}
+
+TEST(MatrixTest, MultiplicationAssignmentOperatorMultNumber) {
+	S21Matrix matrix1;
+	S21Matrix expected_matrix;
+
+	expected_matrix.setRows(3);
+	expected_matrix.setCols(3);
+
+	for (int i = 0; i < expected_matrix.getRows(); ++i) {
+		for (int j = 0; j < expected_matrix.getCols(); ++j) {
+			expected_matrix.setElement(i, j, matrix1.getElement(i, j) * 3.0);
+		}
+	}
+
+	matrix1 *= 3.0;
 
 	EXPECT_TRUE(matrix1.EqMatrix(expected_matrix));
 }
@@ -97,6 +211,97 @@ TEST(MatrixTest, MultMatrix) {
 	matrix1.MultMatrix(matrix2);
 
 	EXPECT_TRUE(matrix1.EqMatrix(expected_matrix));
+}
+
+TEST(MatrixTest, MultMatrixOperator) {
+	
+	S21Matrix matrix1(3, 2);
+	matrix1.setElement(0, 0, 1.0);
+	matrix1.setElement(0, 1, 2.0);
+	matrix1.setElement(1, 0, 3.0);
+	matrix1.setElement(1, 1, 1.0);
+	matrix1.setElement(2, 0, 2.0);
+	matrix1.setElement(2, 1, 3.0);
+
+	S21Matrix matrix2(2, 3);
+	matrix2.setElement(0, 0, 1.0);
+	matrix2.setElement(0, 1, 2.0);
+	matrix2.setElement(0, 2, 3.0);
+	matrix2.setElement(1, 0, 1.0);
+	matrix2.setElement(1, 1, 2.0);
+	matrix2.setElement(1, 2, 3.0);
+
+	S21Matrix expected_matrix(3, 3);
+
+    expected_matrix.setElement(0, 0, 3.0);
+    expected_matrix.setElement(0, 1, 6.0);
+    expected_matrix.setElement(0, 2, 9.0);
+	expected_matrix.setElement(1, 0, 4.0);
+    expected_matrix.setElement(1, 1, 8.0);
+    expected_matrix.setElement(1, 2, 12.0);
+	expected_matrix.setElement(2, 0, 5.0);
+    expected_matrix.setElement(2, 1, 10.0);
+    expected_matrix.setElement(2, 2, 15.0);
+
+	matrix1 * matrix2;
+
+	EXPECT_TRUE(matrix1.EqMatrix(expected_matrix));
+}
+
+TEST(MatrixTest, MultiplicationAssignmentOperatorMultMatrix) {
+	
+	S21Matrix matrix1(3, 2);
+	matrix1.setElement(0, 0, 1.0);
+	matrix1.setElement(0, 1, 2.0);
+	matrix1.setElement(1, 0, 3.0);
+	matrix1.setElement(1, 1, 1.0);
+	matrix1.setElement(2, 0, 2.0);
+	matrix1.setElement(2, 1, 3.0);
+
+	S21Matrix matrix2(2, 3);
+	matrix2.setElement(0, 0, 1.0);
+	matrix2.setElement(0, 1, 2.0);
+	matrix2.setElement(0, 2, 3.0);
+	matrix2.setElement(1, 0, 1.0);
+	matrix2.setElement(1, 1, 2.0);
+	matrix2.setElement(1, 2, 3.0);
+
+	S21Matrix expected_matrix(3, 3);
+
+    expected_matrix.setElement(0, 0, 3.0);
+    expected_matrix.setElement(0, 1, 6.0);
+    expected_matrix.setElement(0, 2, 9.0);
+	expected_matrix.setElement(1, 0, 4.0);
+    expected_matrix.setElement(1, 1, 8.0);
+    expected_matrix.setElement(1, 2, 12.0);
+	expected_matrix.setElement(2, 0, 5.0);
+    expected_matrix.setElement(2, 1, 10.0);
+    expected_matrix.setElement(2, 2, 15.0);
+
+	matrix1 *= matrix2;
+
+	EXPECT_TRUE(matrix1.EqMatrix(expected_matrix));
+}
+
+TEST(MatrixTest, EqMatrixOperator) {
+	
+	S21Matrix matrix1(3, 2);
+	matrix1.setElement(0, 0, 1.0);
+	matrix1.setElement(0, 1, 2.0);
+	matrix1.setElement(1, 0, 3.0);
+	matrix1.setElement(1, 1, 1.0);
+	matrix1.setElement(2, 0, 2.0);
+	matrix1.setElement(2, 1, 3.0);
+
+	S21Matrix matrix2(3, 2);
+	matrix2.setElement(0, 0, 1.0);
+	matrix2.setElement(0, 1, 2.0);
+	matrix2.setElement(1, 0, 3.0);
+	matrix2.setElement(1, 1, 1.0);
+	matrix2.setElement(2, 0, 2.0);
+	matrix2.setElement(2, 1, 3.0);
+
+	EXPECT_TRUE(matrix1 == matrix2);
 }
 
 TEST(MatrixTest, TransposeMatrix) {
@@ -393,6 +598,25 @@ TEST(MatrixTest, DestructorTest) {
 	ASSERT_EQ(rows, 0);
 	ASSERT_EQ(cols, 0);
 	EXPECT_TRUE(is_null);
+}
+
+TEST(MatrixTest, IndexationByMatrixElements) {
+	
+	S21Matrix input(3, 3);
+	input.setElement(0, 0, 1.0);
+	input.setElement(0, 1, 2.0);
+	input.setElement(0, 2, 3.0);
+	input.setElement(1, 0, 4.0);
+	input.setElement(1, 1, 5.0);
+	input.setElement(1, 2, 6.0);
+	input.setElement(2, 0, 7.0);
+	input.setElement(2, 1, 8.0);
+	input.setElement(2, 2, 9.0);
+
+	double actual = input(1, 1);
+	double expected = 5.0;
+
+	ASSERT_DOUBLE_EQ(expected, actual);
 }
 
 int main(int argc, char *argv[])

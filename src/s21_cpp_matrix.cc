@@ -39,6 +39,50 @@ S21Matrix::S21Matrix(S21Matrix&& other)
 	other.matrix_ = nullptr;
 }
 
+S21Matrix& S21Matrix::operator+(const S21Matrix& other) {
+	this->SumMatrix(other);
+	return *this;
+}
+
+S21Matrix& S21Matrix::operator-(const S21Matrix& other) {
+	this->SubMatrix(other);
+	return *this;
+}
+
+S21Matrix& S21Matrix::operator*(const S21Matrix& other) {
+	this->MultMatrix(other);
+	return *this;
+}
+
+S21Matrix& S21Matrix::operator*(const double number) {
+	this->MultNumber(number);
+	return *this;
+}
+
+bool S21Matrix::operator==(const S21Matrix& other) {
+	return(this->EqMatrix(other));
+}
+
+S21Matrix& S21Matrix::operator+=(const S21Matrix& other) {
+	this->SumMatrix(other);
+	return *this;
+}
+
+S21Matrix& S21Matrix::operator-=(const S21Matrix& other) {
+	this->SubMatrix(other);
+	return *this;
+}
+
+S21Matrix& S21Matrix::operator*=(const S21Matrix& other) {
+	this->MultMatrix(other);
+	return *this;
+}
+
+S21Matrix& S21Matrix::operator*=(const double num) {
+	this->MultNumber(num);
+	return *this;
+}
+
 // Copy assignment operator
 S21Matrix& S21Matrix::operator=(const S21Matrix& other) {
     if (this != &other) {
@@ -56,6 +100,10 @@ S21Matrix& S21Matrix::operator=(const S21Matrix& other) {
         }
     }
     return *this;
+}
+
+double S21Matrix::operator()(int i, int j) {
+	return (this->getElement(i, j));
 }
 
 // TODO: Exception when the rows or cols are incorrect
