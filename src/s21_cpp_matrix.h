@@ -4,30 +4,32 @@
 #include <iostream>
 #include <cmath>
 
-class InvalidMatrixException : public std::runtime_error {
+class InvalidMatrixException : public std::invalid_argument {
 public:
-	InvalidMatrixException(const std::string& message) : std::runtime_error(message) {}
+	InvalidMatrixException(const std::string& message) : std::invalid_argument(message) {}
 };
 
-class DifferentMatrixDimensionsException : public std::runtime_error {
+class DifferentMatrixDimensionsException : public std::invalid_argument {
 public:
-	DifferentMatrixDimensionsException(const std::string& message) : std::runtime_error(message) {}
+	DifferentMatrixDimensionsException(const std::string& message) : std::invalid_argument(message) {}
 };
 
-class MultInvalidMatrixSize : public std::runtime_error {
+class MultInvalidMatrixSizeException : public std::invalid_argument {
 public:
-	MultInvalidMatrixSize(const std::string& message) : std::runtime_error(message) {}
+	MultInvalidMatrixSizeException(const std::string& message) : std::invalid_argument(message) {}
 };
 
-class NotSquaredMatrix : public std::runtime_error {
+class NotSquaredMatrixException : public std::invalid_argument {
 public:
-	NotSquaredMatrix(const std::string& message) : std::runtime_error(message) {}
+	NotSquaredMatrixException(const std::string& message) : std::invalid_argument(message) {}
 };
 
 class ZeroDeterminantException : public std::runtime_error {
 public:
 	ZeroDeterminantException(const std::string& message) : std::runtime_error(message) {}
 };
+
+
 
 class S21Matrix {
     private:
@@ -42,6 +44,11 @@ class S21Matrix {
 		void get_cofactor(S21Matrix& temp, int skip_row, int skip_col, int size) const;
 		double get_determinant(const S21Matrix& matrix, int size);
 		void get_algebraic_complement(double* res, int row_i, int col_i);
+		// Exceptions
+		void is_matrix_valid_exception_check() const;
+		void are_matrices_valid_exception_check(const S21Matrix& other) const;
+		void are_dimensions_equal_exception_check(const S21Matrix& other) const;
+		void is_matrix_squared_exception_check() const;
 
     public:
         S21Matrix();

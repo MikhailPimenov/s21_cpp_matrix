@@ -1,8 +1,7 @@
 #include "s21_cpp_matrix.h"
 
-S21Matrix::S21Matrix() {
-    setRows(3);
-    setCols(3);
+S21Matrix::S21Matrix()
+	: rows_(3), cols_(3) {
     setElementsConst();
 }
 
@@ -20,9 +19,8 @@ bool S21Matrix::matrix_is_null() const {
 	return (matrix_ == nullptr);
 }
 
-S21Matrix::S21Matrix(const S21Matrix& other) {
-	rows_ = other.rows_;
-    cols_ = other.cols_;
+S21Matrix::S21Matrix(const S21Matrix& other) 
+	: rows_(other.rows_), cols_(other.cols_) {
     matrix_ = new double*[rows_];
     for (int row_i = 0; row_i < rows_; ++row_i) {
         matrix_[row_i] = new double[cols_];
@@ -107,15 +105,13 @@ double S21Matrix::operator()(int i, int j) {
 }
 
 // TODO: Exception when the rows or cols are incorrect
-S21Matrix::S21Matrix(int rows, int cols) {
-	rows_ = rows;
-	cols_ = cols;
+S21Matrix::S21Matrix(int rows, int cols)
+	: rows_(rows), cols_(cols) {
 
 	matrix_ = new double*[rows];
 	for (int row_i = 0; row_i < rows_; ++row_i) {
 		matrix_[row_i] = new double[cols_];
 		for (int col_i = 0; col_i < cols_; ++col_i) {
-			// Set the default values for the matrix
 			matrix_[row_i][col_i] = 0.0;
 		}
 	}
@@ -178,7 +174,7 @@ void S21Matrix::print_out_matrix() const {
 
 bool S21Matrix::EqMatrix(const S21Matrix& other) {
 	bool are_equal = true;
-	if (rows_ != other.rows_ || cols_ != other.cols_) {
+	if (are_different_sizes(other)) {
 		are_equal = false;
 	} else {
 		for (int i = 0; i < rows_; ++i) {
@@ -193,78 +189,45 @@ bool S21Matrix::EqMatrix(const S21Matrix& other) {
 }
 
 void S21Matrix::SumMatrix(const S21Matrix& other) {
-	try {
-		if (is_invalid_matrix() || other.is_invalid_matrix()) {
-			throw InvalidMatrixException("Matrix dimesions must be greater than zero");
-		} else if (are_different_sizes(other)) {
-			throw DifferentMatrixDimensionsException("Matrix dimenstions must be equal to perform sum, sub or mult operations");
-		} else {
-			count(other, '+', 0.0);
-		}
-	} catch (const InvalidMatrixException& inv_e) {
-		std::cerr << "Caugth an invalid matrix exception: " << inv_e.what() << '\n';
-	} catch (const DifferentMatrixDimensionsException& diff_dim_e) {
-		std::cerr << "Caugth a different matrix dimensions exception: " << diff_dim_e.what() << '\n';
-	}
+	are_matrices_valid_exception_check(other);
+	are_dimensions_equal_exception_check(other);
+	count(other, '+', 0.0);
 }
 
 void S21Matrix::SubMatrix(const S21Matrix& other) {
-	try {
-		if (is_invalid_matrix() || other.is_invalid_matrix()) {
-			throw InvalidMatrixException("Matrix dimesions must be greater than zero");
-		} else if (are_different_sizes(other)) {
-			throw DifferentMatrixDimensionsException("Matrix dimenstions must be equal to perform sum, sub or mult operations");
-		} else {
-			count(other, '-', 0.0);
-		}
-	} catch (const InvalidMatrixException& inv_e) {
-		std::cerr << "Caugth an invalid matrix exception: " << inv_e.what() << '\n';
-	} catch (const DifferentMatrixDimensionsException& diff_dim_e) {
-		std::cerr << "Caugth a different matrix dimensions exception: " << diff_dim_e.what() << '\n';
-	}
+	are_matrices_valid_exception_check(other);
+	are_dimensions_equal_exception_check(other);
+	count(other, '-', 0.0);
 }
 
 void S21Matrix::MultMatrix(const S21Matrix& other) {
-	try {
-		if (is_invalid_matrix() || other.is_invalid_matrix()) {
-			throw InvalidMatrixException("Matrix dimesions must be greater than zero");
-		} else if (cols_ != other.rows_) {
-			throw MultInvalidMatrixSize("Numnber of rows of the first matrix must be equal to the number of cols of the second matrix to perform the multiplication");
-		} else {
-			int result_rows = rows_, result_cols = other.cols_;
-			S21Matrix temp(result_rows, result_cols);
-			double current_sum = 0.0;
-			for (int read_row_i = 0; read_row_i < result_rows; ++read_row_i) {
-				for (int read_col_i = 0; read_col_i < result_cols; ++read_col_i) {
-					for (int sum_row_i = 0; sum_row_i < cols_; ++sum_row_i) {
-						current_sum += matrix_[read_row_i][sum_row_i] * other.matrix_[sum_row_i][read_col_i];
-					}
-					temp.matrix_[read_row_i][read_col_i] = current_sum;
-					current_sum = 0;
+	are_matrices_valid_exception_check(other);
+	if (cols_ != other.rows_) {
+		throw MultInvalidMatrixSizeException("Numnber of rows of the first matrix must be equal to the number of cols of the second matrix to perform the multiplication");
+	} else {
+		int result_rows = rows_, result_cols = other.cols_;
+		S21Matrix temp(result_rows, result_cols);
+		double current_sum = 0.0;
+		for (int read_row_i = 0; read_row_i < result_rows; ++read_row_i) {
+			for (int read_col_i = 0; read_col_i < result_cols; ++read_col_i) {
+				for (int sum_row_i = 0; sum_row_i < cols_; ++sum_row_i) {
+					current_sum += matrix_[read_row_i][sum_row_i] * other.matrix_[sum_row_i][read_col_i];
 				}
+				temp.matrix_[read_row_i][read_col_i] = current_sum;
+				current_sum = 0;
 			}
-			*this = temp;
-		} 
-	} catch (const InvalidMatrixException& inv_e) {
-		std::cerr << "Caugth an invalid matrix exception: " << inv_e.what() << '\n';
-	} catch (const DifferentMatrixDimensionsException& diff_dim_e) {
-		std::cerr << "Caugth a different matrix dimensions exception: " << diff_dim_e.what() << '\n';
-	}
+		}
+		*this = temp;
+	} 
 }
 
 void S21Matrix::MultNumber(const double num) {
-	try {
-		if (is_invalid_matrix()) {
-			throw InvalidMatrixException("Matrix dimesions must be greater than zero");
-		} else {
-			count(*this, 'n', num);
-		}
-	} catch (const InvalidMatrixException& inv_e) {
-		std::cerr << "Caugth an invalid matrix exception: " << inv_e.what() << '\n';
-	}
+	is_matrix_valid_exception_check();
+	count(*this, 'n', num);
 }
 
 S21Matrix S21Matrix::Transpose() {
+	is_matrix_valid_exception_check();
 	S21Matrix result(cols_, rows_);
 	for (int row_i = 0; row_i < rows_; ++row_i) {
 		for (int col_i = 0; col_i < cols_; ++col_i) {
@@ -275,72 +238,49 @@ S21Matrix S21Matrix::Transpose() {
 }
 
 S21Matrix S21Matrix::CalcComplements() {
-	try {
-		if (is_invalid_matrix()) {
-			throw InvalidMatrixException("Matrix dimesions must be greater than zero");
-		} else if (matrix_is_not_squared()) {
-			throw NotSquaredMatrix("Matrix should be squared to perform CaclComplements");
-		} else {
-			if (rows_ == 1) {
-				S21Matrix result(1, 1);
-				result.setElement(0, 0, matrix_[0][0]);
-				return result;
-			} else if (rows_ == 2) {
-				S21Matrix result(2, 2);
-				result.setElement(0, 0, matrix_[1][1]);
-				result.setElement(0, 1, matrix_[1][0]);
-				result.setElement(1, 0, matrix_[0][1]);
-				result.setElement(1, 1, matrix_[0][0]);
-				return result;
-			} else {
-				S21Matrix res_matrix(rows_, cols_);
-				double temp_res = 0.0;
-				for (int row_i = 0; row_i < rows_; ++row_i) {
-					for (int col_i = 0; col_i < cols_; ++col_i) {
-						S21Matrix temp(rows_ - 1, cols_ - 1);
-						get_cofactor(temp, row_i, col_i, rows_);
-						temp_res = get_determinant(temp, temp.rows_);
-						get_algebraic_complement(&temp_res, row_i, col_i);
-						res_matrix.setElement(row_i, col_i, temp_res);
-					}
-				}
-				return res_matrix;
+	is_matrix_valid_exception_check();
+	is_matrix_squared_exception_check();
+	if (rows_ == 1) {
+		S21Matrix result(1, 1);
+		result.setElement(0, 0, matrix_[0][0]);
+		return result;
+	} else if (rows_ == 2) {
+		S21Matrix result(2, 2);
+		result.setElement(0, 0, matrix_[1][1]);
+		result.setElement(0, 1, matrix_[1][0]);
+		result.setElement(1, 0, matrix_[0][1]);
+		result.setElement(1, 1, matrix_[0][0]);
+		return result;
+	} else {
+		S21Matrix res_matrix(rows_, cols_);
+		double temp_res = 0.0;
+		for (int row_i = 0; row_i < rows_; ++row_i) {
+			for (int col_i = 0; col_i < cols_; ++col_i) {
+				S21Matrix temp(rows_ - 1, cols_ - 1);
+				get_cofactor(temp, row_i, col_i, rows_);
+				temp_res = get_determinant(temp, temp.rows_);
+				get_algebraic_complement(&temp_res, row_i, col_i);
+				res_matrix.setElement(row_i, col_i, temp_res);
 			}
 		}
-	} catch (const InvalidMatrixException& inv_e) {
-		std::cerr << "Caugth an invalid matrix exception: " << inv_e.what() << '\n';
-	} catch (const NotSquaredMatrix& not_square_e) {
-		std::cerr << "Caugth a not square matrix exception: " << not_square_e.what() << '\n';
+		return res_matrix;
 	}
-    // Return an empty matrix if an exception is thrown
     return S21Matrix();
 }
 
 S21Matrix S21Matrix::InverseMatrix() {
-	try {
-		if (is_invalid_matrix()) {
-			throw InvalidMatrixException("Matrix dimesions must be greater than zero");
-		} else if (matrix_is_not_squared()) {
-			throw NotSquaredMatrix("Matrix should be squared to perform CaclComplements");
-		// TODO: Exception if the deteminant of the matrix is 0
-		} else {
-				double det_res = 0.0;
-				det_res = this->Determinant();
-				if (fabs(det_res) < EPSILON) {
-					throw ZeroDeterminantException("For InverseMatrix calculation the deteminant of the matrix shouldn't be equal to zero");
-				} else {
-					S21Matrix temp_first(rows_, cols_);
-					S21Matrix temp_second(rows_, cols_);
-					temp_first = this->CalcComplements();
-					temp_second = temp_first.Transpose();
-					temp_second.MultNumber(1.0 / det_res);
-					return temp_second;
-				}
-			}
-	} catch (const InvalidMatrixException& inv_e) {
-		std::cerr << "Caugth an invalid matrix exception: " << inv_e.what() << '\n';
-	} catch (const NotSquaredMatrix& not_square_e) {
-		std::cerr << "Caugth a not square matrix exception: " << not_square_e.what() << '\n';
+	is_matrix_valid_exception_check();
+	double det_res = 0.0;
+	det_res = this->Determinant();
+	if (fabs(det_res) < EPSILON) {
+		throw ZeroDeterminantException("For InverseMatrix calculation the deteminant of the matrix shouldn't be equal to zero");
+	} else {
+		S21Matrix temp_first(rows_, cols_);
+		S21Matrix temp_second(rows_, cols_);
+		temp_first = this->CalcComplements();
+		temp_second = temp_first.Transpose();
+		temp_second.MultNumber(1.0 / det_res);
+		return temp_second;
 	}
     return S21Matrix();
 }
@@ -349,6 +289,30 @@ bool S21Matrix::matrix_is_not_squared() const {
 	return rows_ != cols_;
 }
 
+void S21Matrix::are_matrices_valid_exception_check(const S21Matrix& other) const {
+	if (this->is_invalid_matrix() || other.is_invalid_matrix()) {
+		throw InvalidMatrixException("Matrix dimensions must be greater than zero");
+	}
+}
+
+void S21Matrix::is_matrix_valid_exception_check() const {
+	if (this->is_invalid_matrix()) {
+		throw InvalidMatrixException("Matrix dimensions must be greater than zero");
+	}
+}
+
+void S21Matrix::are_dimensions_equal_exception_check(const S21Matrix& other) const { 
+	if (other.rows_ != rows_ || other.cols_ != cols_) {
+		throw DifferentMatrixDimensionsException("Matrix dimenstions must be equal to perform sum, sub or mult operations");
+	}
+}
+
+void S21Matrix::is_matrix_squared_exception_check() const {
+	if (matrix_is_not_squared()) {
+		throw NotSquaredMatrixException("Matrix should be squared to perform CaclComplements or Determinant");
+	}
+}
+	
 bool S21Matrix::are_different_sizes(const S21Matrix& other) const {
 	return (other.rows_ != rows_ || other.cols_ != cols_);
 }
@@ -414,17 +378,13 @@ void S21Matrix::get_algebraic_complement(double* res, int row_i, int col_i) {
 }
 
 double S21Matrix::Determinant() {
-	if (is_invalid_matrix()) {
-		throw InvalidMatrixException("Matrix dimesions must be greater than zero");
-	} else if (matrix_is_not_squared()) {
-		throw NotSquaredMatrix("Matrix should be squared to perform CaclComplements");
+	is_matrix_valid_exception_check();
+	is_matrix_squared_exception_check();
+	double res = 0.0;
+	if (rows_ == 1) {
+		res = matrix_[0][0];
 	} else {
-		double res = 0.0;
-		if (rows_ == 1) {
-				res = matrix_[0][0];
-		} else {
-			res = get_determinant(*this, rows_);
-		}
-		return res;
+		res = get_determinant(*this, rows_);
 	}
+	return res;
 }
