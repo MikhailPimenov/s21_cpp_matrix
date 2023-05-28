@@ -115,15 +115,15 @@ void S21Matrix::get_algebraic_complement(double* res, int row_i, int col_i) {
 }
 
 // Additional helper functions:
-
-void S21Matrix::print_out_matrix() const {
-    for (int i = 0; i < getRows(); ++i) {
-        for (int j = 0; j < getCols(); ++j) {
-            std::cout << getElement(i, j) << " ";
-        }
-        std::cout << std::endl;
-    }
-}
+// Used for troubleshooting
+//void S21Matrix::print_out_matrix() const {
+//    for (int i = 0; i < getRows(); ++i) {
+//        for (int j = 0; j < getCols(); ++j) {
+//            std::cout << getElement(i, j) << " ";
+//        }
+//        std::cout << std::endl;
+//    }
+//}
 
 bool S21Matrix::are_different_sizes(const S21Matrix& other) const {
 	return (other.rows_ != rows_ || other.cols_ != cols_);

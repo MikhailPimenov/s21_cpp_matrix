@@ -3,30 +3,37 @@ CC = g++
 TEST_LIB = -lgtest
 TEST_DIR = tests/
 FLAGS = -Wall -Werror -Wextra -Wpedantic -std=c++17 -fsanitize=address -fsanitize=undefined
+SOURCES = s21_matrix_oop.cc s21_helpers.cc s21_exception_handling.cc
 
 VALGRIND_REPORT_DIRECTORY_FOR_DOCKER_CONTAINER = valgrind_report
 
-.PHONY: test
+.PHONY: all test gcov_report clean valgrind
 
-tests_main: 
-	$(CC) $(FLAGS) $(TEST_DIR)tests_main.cc s21_matrix_oop.cc s21_helpers.cc s21_exception_handling.cc -o tests_main.out $(TEST_LIB)
+all: clean s21_matrix_oop.a 
 
-test_constructor:
-	$(CC) $(FLAGS) -o test_constructor.out s21_matrix_oop.cc
+s21_matrix_oop.a:
+	$(CC) $(FLAGS) -c $(SOURCES)
+	ar rvs s21_matrix_oop.a *.o
 
-test: tests_main
-	-./tests_main.out
+test: 
+	$(CC) $(FLAGS) $(TEST_DIR)tests_main.cc $(SOURCES) -o tests.out $(TEST_LIB)
+	./tests.out
+
+gcov_report:
+	$(CC) --coverage $(FLAGS) $(TEST_DIR)tests_main.cc $(SOURCES) -o tests_coverage.out $(TEST_LIB)
+	./tests_coverage.out
+	lcov --directory . --capture --output-file coverage.info
+	lcov --remove coverage.info '/usr/*' '*/gtest/*' '*/tests/*' --output-file coverage.info.cleaned
+	genhtml coverage.info.cleaned --output-directory coverage_report
+	open coverage_report/index.html
 
 clean:
-	rm -f *.a *.out $(TEST_DIR)*.o $(TEST_DIR).out
+	rm -f *.a *.out *.o $(TEST_DIR)*.o $(TEST_DIR).out *.gcno *.gcda *.info *.info.cleaned
+	rm -rf $(VALGRIND_REPORT_DIRECTORY_FOR_DOCKER_CONTAINER) coverage_report
+
+# TODO: Style check target
 
 valgrind: test
-	mkdir -p $(VALGRIND_REPORT_DIRECTORY_FOR_DOCKER_CONTAINER)/
-	-valgrind --leak-check=full --show-reachable=no --track-origins=yes --log-file=$(VALGRIND_REPORT_DIRECTORY_FOR_DOCKER_CONTAINER)/valgrind_report.txt -s ./tests_main.out > $(VALGRIND_REPORT_DIRECTORY_FOR_DOCKER_CONTAINER)/test_report.txt
-	cat $(VALGRIND_REPORT_DIRECTORY_FOR_DOCKER_CONTAINER)/test_report.txt
-	cat $(VALGRIND_REPORT_DIRECTORY_FOR_DOCKER_CONTAINER)/valgrind_report.txt
-
-valgrind_full: test
 	mkdir -p $(VALGRIND_REPORT_DIRECTORY_FOR_DOCKER_CONTAINER)
 	-valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --log-file=$(VALGRIND_REPORT_DIRECTORY_FOR_DOCKER_CONTAINER)/valgrind_full_report.txt -s ./tests/tests_main.exe > $(VALGRIND_REPORT_DIRECTORY_FOR_DOCKER_CONTAINER)/test_report.txt
 	cat $(VALGRIND_REPORT_DIRECTORY_FOR_DOCKER_CONTAINER)/test_report.txt
