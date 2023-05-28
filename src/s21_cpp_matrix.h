@@ -29,14 +29,13 @@ public:
 	ZeroDeterminantException(const std::string& message) : std::runtime_error(message) {}
 };
 
-
-
 class S21Matrix {
     private:
         int rows_, cols_;
         double **matrix_;
 		static constexpr double EPSILON = 1e-7;
 	private:
+		// Private functions for internal use
 		bool is_invalid_matrix() const;
 		bool are_different_sizes(const S21Matrix& other) const;
 		bool matrix_is_not_squared() const;
@@ -51,12 +50,23 @@ class S21Matrix {
 		void is_matrix_squared_exception_check() const;
 
     public:
+		// Constructors
         S21Matrix();
         S21Matrix(int rows, int cols);
 		~S21Matrix();
 		S21Matrix(const S21Matrix& other);
 		S21Matrix(S21Matrix&& other);
-
+		// Main matrix functions
+		bool EqMatrix(const S21Matrix& other);
+		void SumMatrix(const S21Matrix& other);
+		void SubMatrix(const S21Matrix& other);
+		void MultNumber(const double num);
+		void MultMatrix(const S21Matrix& other);
+		S21Matrix Transpose();
+		S21Matrix CalcComplements();
+		double Determinant();
+		S21Matrix InverseMatrix();
+		// Operator overloading
 		S21Matrix& operator+(const S21Matrix& other);
 		S21Matrix& operator-(const S21Matrix& other);
 		S21Matrix& operator*(const S21Matrix& other);
@@ -68,7 +78,7 @@ class S21Matrix {
 		S21Matrix& operator*=(const S21Matrix& other);
 		S21Matrix& operator*=(const double num);
 		double operator()(int i, int j);
-
+		// Setters, getters and additional helper functions
         void setRows(int rows);
         int getRows() const;
         void setCols(int cols);
@@ -78,16 +88,6 @@ class S21Matrix {
         void setElementsConst();
 		void print_out_matrix() const;
 		bool matrix_is_null() const;
-		
-		bool EqMatrix(const S21Matrix& other);
-		void SumMatrix(const S21Matrix& other);
-		void SubMatrix(const S21Matrix& other);
-		void MultNumber(const double num);
-		void MultMatrix(const S21Matrix& other);
-		S21Matrix Transpose();
-		S21Matrix CalcComplements();
-		double Determinant();
-		S21Matrix InverseMatrix();
 };
 
 #endif /* S21_CPP_MATRIX_H */

@@ -104,7 +104,6 @@ double S21Matrix::operator()(int i, int j) {
 	return (this->getElement(i, j));
 }
 
-// TODO: Exception when the rows or cols are incorrect
 S21Matrix::S21Matrix(int rows, int cols)
 	: rows_(rows), cols_(cols) {
 
@@ -118,7 +117,11 @@ S21Matrix::S21Matrix(int rows, int cols)
 }
 
 void S21Matrix::setRows(int rows) {
-    rows_ = rows;
+	if (rows > 0) {
+	    rows_ = rows;
+	} else {
+		throw std::out_of_range("Rows cannot be less than 1");
+	}
 }
 
 int S21Matrix::getRows() const {
@@ -126,7 +129,11 @@ int S21Matrix::getRows() const {
 }
 
 void S21Matrix::setCols(int cols) {
-    cols_ = cols;
+    if (cols > 0) {
+	    cols_ = cols;
+	} else {
+		throw std::out_of_range("Cols cannot be less than 1");
+	}
 }
 
 int S21Matrix::getCols() const {

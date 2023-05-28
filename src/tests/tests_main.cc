@@ -64,6 +64,12 @@ TEST(MatrixTest, EqMatrixEpsilon) {
 	EXPECT_FALSE(matrix1.EqMatrix(matrix2));
 }
 
+TEST(MatrixTest, EqMatrixOperatorElementsAreEqual) {
+	S21Matrix matrix1;
+	S21Matrix matrix2;
+	EXPECT_TRUE(matrix1 == matrix2);
+}
+
 TEST(MatrixTest, SumMatrixBasic) {
 	S21Matrix matrix1;
 	S21Matrix matrix2;
@@ -156,6 +162,25 @@ TEST(MatrixTest, AdditionAssignmentOperatorMatrix) {
 	EXPECT_TRUE(matrix1.EqMatrix(expected_matrix));
 }
 
+TEST(MatrixTest, AdditionAssignmentOperatorMatricesAreInvalid) {
+	S21Matrix matrix1;
+	matrix1.setCols(0);
+	S21Matrix matrix2;
+
+	EXPECT_THROW(matrix1 += matrix2, InvalidMatrixException);
+}
+
+
+
+TEST(MatrixTest, AdditionAssignmentOperatorMatricesOfDifferentSizes) {
+	S21Matrix matrix1;
+	matrix1.setCols(1);
+	S21Matrix matrix2;
+
+	EXPECT_THROW(matrix1 += matrix2, DifferentMatrixDimensionsException);
+}
+
+
 TEST(MatrixTest, SubMatrixBasic) {
 	S21Matrix matrix1;
 	S21Matrix matrix2;
@@ -212,6 +237,22 @@ TEST(MatrixTest, SubOperatorMatrix) {
 	EXPECT_TRUE(matrix1.EqMatrix(expected_matrix));
 }
 
+TEST(MatrixTest, SubOperatorMatricesAreInvalid) {
+	S21Matrix matrix1;
+	matrix1.setCols(0);
+	S21Matrix matrix2;
+
+	EXPECT_THROW(matrix1 - matrix2, InvalidMatrixException);
+}
+
+TEST(MatrixTest, SubOperatorMatricesOfDifferentSizes) {
+	S21Matrix matrix1;
+	matrix1.setCols(1);
+	S21Matrix matrix2;
+
+	EXPECT_THROW(matrix1 - matrix2, DifferentMatrixDimensionsException);
+}
+
 TEST(MatrixTest, DifferenceAssignmentOperatorMatrix) {
 	S21Matrix matrix1;
 	S21Matrix matrix2;
@@ -229,6 +270,22 @@ TEST(MatrixTest, DifferenceAssignmentOperatorMatrix) {
 	matrix1 -= matrix2;
 
 	EXPECT_TRUE(matrix1.EqMatrix(expected_matrix));
+}
+
+TEST(MatrixTest, DifferenceAssignmentOperatorMatricesAreInvalid) {
+	S21Matrix matrix1;
+	matrix1.setCols(0);
+	S21Matrix matrix2;
+
+	EXPECT_THROW(matrix1 -= matrix2, InvalidMatrixException);
+}
+
+TEST(MatrixTest, DifferenceAssignmentOperatorMatricesOfDifferentSizes) {
+	S21Matrix matrix1;
+	matrix1.setCols(1);
+	S21Matrix matrix2;
+
+	EXPECT_THROW(matrix1 -= matrix2, DifferentMatrixDimensionsException);
 }
 
 TEST(MatrixTest, MultByNumberBasic) {
@@ -272,6 +329,11 @@ TEST(MatrixTest, MultByNumberOperator) {
 	EXPECT_TRUE(matrix1.EqMatrix(expected_matrix));
 }
 
+TEST(MatrixTest, MultByNumberOperatorInvalidMatrixException) {
+	S21Matrix matrix1(1, 0);
+	EXPECT_THROW(matrix1 * 1.0, InvalidMatrixException);
+}
+
 TEST(MatrixTest, MultiplicationAssignmentOperatorMultNumber) {
 	S21Matrix matrix1;
 	S21Matrix expected_matrix;
@@ -289,6 +351,12 @@ TEST(MatrixTest, MultiplicationAssignmentOperatorMultNumber) {
 
 	EXPECT_TRUE(matrix1.EqMatrix(expected_matrix));
 }
+
+TEST(MatrixTest, MultiplicationAssignmentOperatorInvalidMatrixException) {
+	S21Matrix matrix1(1, 0);
+	EXPECT_THROW(matrix1 *= 1.0, InvalidMatrixException);
+}
+
 
 TEST(MatrixTest, MultMatrixBasic) {
 	
@@ -726,6 +794,35 @@ TEST(MatrixTest, CopyConstructorTest) {
 	EXPECT_TRUE(actual.EqMatrix(expected));
 }
 
+TEST(MatrixTest, CopyAssignmentOperatorTest) {
+	
+	S21Matrix input(3, 3);
+	input.setElement(0, 0, 1.0);
+	input.setElement(0, 1, 2.0);
+	input.setElement(0, 2, 3.0);
+	input.setElement(1, 0, 4.0);
+	input.setElement(1, 1, 5.0);
+	input.setElement(1, 2, 6.0);
+	input.setElement(2, 0, 7.0);
+	input.setElement(2, 1, 8.0);
+	input.setElement(2, 2, 9.0);
+
+	S21Matrix expected(3, 3);
+	expected.setElement(0, 0, 1.0);
+	expected.setElement(0, 1, 2.0);
+	expected.setElement(0, 2, 3.0);
+	expected.setElement(1, 0, 4.0);
+	expected.setElement(1, 1, 5.0);
+	expected.setElement(1, 2, 6.0);
+	expected.setElement(2, 0, 7.0);
+	expected.setElement(2, 1, 8.0);
+	expected.setElement(2, 2, 9.0);
+
+	S21Matrix actual = input;
+
+	EXPECT_TRUE(actual.EqMatrix(expected));
+}
+
 TEST(MatrixTest, MovementConstructorTest) {
 	
 	S21Matrix input(3, 3);
@@ -796,6 +893,22 @@ TEST(MatrixTest, IndexationByMatrixElements) {
 	double expected = 5.0;
 
 	ASSERT_DOUBLE_EQ(expected, actual);
+}
+
+TEST(MatrixTest, IndexationByMatrixElementsOutOfRange) {
+	
+	S21Matrix input(3, 3);
+	input.setElement(0, 0, 1.0);
+	input.setElement(0, 1, 2.0);
+	input.setElement(0, 2, 3.0);
+	input.setElement(1, 0, 4.0);
+	input.setElement(1, 1, 5.0);
+	input.setElement(1, 2, 6.0);
+	input.setElement(2, 0, 7.0);
+	input.setElement(2, 1, 8.0);
+	input.setElement(2, 2, 9.0);
+
+	EXPECT_THROW(input(1, 4), std::out_of_range);
 }
 
 int main(int argc, char *argv[])
