@@ -1,4 +1,10 @@
-#include "s21_matrix_oop.h"
+// #include "s21_matrix_oop.h"
+
+// Общее, не только для этого файла - public метод с большой буквы, private метод с маленькой
+// Общее, не только для этого файла - имена методов должны быть одного стиля. Если в задании CamelCase, то тогда все методы CamelCase.
+// private - с маленькой буквы, public - с большой
+
+
 
 // Setters and getters:
 
@@ -9,10 +15,17 @@ void S21Matrix::setRows(int rows) {
 //		throw std::out_of_range("Rows cannot be less than 1");
 //	}
 }
+// метод должен проверить новое значение rows и если оно валидное, то если оно отличается от rows_, перевыделить память.
+// заполнить нулями если новая матрица будет больше. Или отбросить лишнее, если новая матрица меньше
+// с большой буквы метод, потому что public
+
+
+
 
 int S21Matrix::getRows() const {
     return rows_;
 }
+// метод должен быть noexcept
 
 void S21Matrix::setCols(int cols) {
 //    if (cols > 0) {
@@ -21,10 +34,12 @@ void S21Matrix::setCols(int cols) {
 //		throw std::out_of_range("Cols cannot be less than 1");
 //	}
 }
+// аналогично с SetRows
 
 int S21Matrix::getCols() const {
     return cols_;
 }
+// c большой буквы и noexcept
 
 double S21Matrix::getElement(int row, int col) const {
     if (row >= 0 && row < rows_ && col >= 0 && col < cols_) {
@@ -34,9 +49,11 @@ double S21Matrix::getElement(int row, int col) const {
     }
 }
 
+
 void S21Matrix::setElement(int row, int col, double value) {
 	matrix_[row][col] = value;
 }
+// нужна проверка, чтобы row и col были от 0 до rows_ и от 0 до cols_
 
 void S21Matrix::setElementsConst() {
 	try {
@@ -55,12 +72,20 @@ void S21Matrix::setElementsConst() {
 		std::cerr << "bad_alloc caught: " << ba.what() << '\n';
 	}
 }
+// имя метода не отражает его суть. Больше подходит allocate()
+// Понятно, что он был для отладки и в самом начале, но сейчас он путает того, кто читает код
+// Если посмотреть вызов этого метода в конструкторе по умолчанию, то не увидев тела метода, не понятно, что он делает
+
 
 // Calculation helpers:
 
 void S21Matrix::count(const S21Matrix& other, char operand, double mult_num) {
 	int row_i = 0, col_i = 0;
 	while (row_i < rows_) {
+		
+		// col_i лучше создавать здесь, тогда у него будет 
+		// меньше область видимости и его не придётся обнулять по завершении внутреннего цикла
+		
 		while (col_i < cols_) {
 			if (operand == '+') {
 				matrix_[row_i][col_i] = other.matrix_[row_i][col_i] + matrix_[row_i][col_i];
@@ -77,6 +102,8 @@ void S21Matrix::count(const S21Matrix& other, char operand, double mult_num) {
 		++row_i;
 	}
 }
+// метод должен быть noexcept
+
 
 void S21Matrix::get_cofactor(S21Matrix& temp, int skip_row, int skip_col, int size) const {
 	for (int temp_row_i = 0, read_row_i = 0; read_row_i < size; ++read_row_i) {
@@ -109,10 +136,15 @@ double S21Matrix::get_determinant(const S21Matrix& matrix, int size) {
 	}
 	return res;
 }
+// метод должен быть статичным, потому что он не обращается к полям класса
+
+
+
 
 void S21Matrix::get_algebraic_complement(double* res, int row_i, int col_i) {
 	*res *= pow(-1.0, row_i + col_i + 2);
 }
+// метод должен быть статичным, потому что не обращается к полям класса
 
 // Additional helper functions:
 // Used for troubleshooting
@@ -124,6 +156,9 @@ void S21Matrix::get_algebraic_complement(double* res, int row_i, int col_i) {
 //        std::cout << std::endl;
 //    }
 //}
+// имя просто print
+
+
 
 bool S21Matrix::are_different_sizes(const S21Matrix& other) const {
 	return (other.rows_ != rows_ || other.cols_ != cols_);
@@ -132,12 +167,18 @@ bool S21Matrix::are_different_sizes(const S21Matrix& other) const {
 bool S21Matrix::is_invalid_matrix() const {
 	return (rows_ < 1 || cols_ < 1); 
 }
+// matrix в имени можно убрать, потому что метод и так принадлежит классу S21Matrix и понятно, что про матрицу
 
 bool S21Matrix::matrix_is_not_squared() const {
 	return rows_ != cols_;
 }
+// matrix в имени можно убрать, потому что метод и так принадлежит классу S21Matrix и понятно, что про матрицу
+
 
 bool S21Matrix::matrix_is_null() const {
 	return (matrix_ == nullptr);
 }
+// matrix в имени можно убрать, потому что метод и так принадлежит классу S21Matrix и понятно, что про матрицу
+
+
 
