@@ -117,11 +117,11 @@ S21Matrix::S21Matrix(int rows, int cols)
 }
 
 void S21Matrix::setRows(int rows) {
-	if (rows > 0) {
+//	if (rows > 0) {
 	    rows_ = rows;
-	} else {
-		throw std::out_of_range("Rows cannot be less than 1");
-	}
+//	} else {
+//		throw std::out_of_range("Rows cannot be less than 1");
+//	}
 }
 
 int S21Matrix::getRows() const {
@@ -129,11 +129,11 @@ int S21Matrix::getRows() const {
 }
 
 void S21Matrix::setCols(int cols) {
-    if (cols > 0) {
+//    if (cols > 0) {
 	    cols_ = cols;
-	} else {
-		throw std::out_of_range("Cols cannot be less than 1");
-	}
+//	} else {
+//		throw std::out_of_range("Cols cannot be less than 1");
+//	}
 }
 
 int S21Matrix::getCols() const {
