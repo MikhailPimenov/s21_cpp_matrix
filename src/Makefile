@@ -9,10 +9,10 @@ VALGRIND_REPORT_DIRECTORY_FOR_DOCKER_CONTAINER = valgrind_report
 .PHONY: test
 
 tests_main: 
-	$(CC) $(FLAGS) $(TEST_DIR)tests_main.cc s21_cpp_matrix.cc -o tests_main.out $(TEST_LIB)
+	$(CC) $(FLAGS) $(TEST_DIR)tests_main.cc s21_matrix_oop.cc s21_helpers.cc s21_exception_handling.cc -o tests_main.out $(TEST_LIB)
 
 test_constructor:
-	$(CC) $(FLAGS) -o test_constructor.out s21_cpp_matrix.cc
+	$(CC) $(FLAGS) -o test_constructor.out s21_matrix_oop.cc
 
 test: tests_main
 	-./tests_main.out

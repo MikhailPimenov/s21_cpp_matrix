@@ -1,5 +1,5 @@
-#ifndef S21_MATRIX_OOP_H
-#define S21_MATRIX_OOP_H
+#ifndef S21_CPP_MATRIX_H
+#define S21_CPP_MATRIX_H
 
 #include <iostream>
 #include <cmath>
@@ -66,4 +66,4 @@ class S21Matrix {
 		bool matrix_is_null() const;
 };
 
-#endif /* S21_MATRIX_OOP_H */
+#endif /* S21_CPP_MATRIX_H */
