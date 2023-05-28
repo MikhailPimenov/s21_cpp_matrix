@@ -31,7 +31,17 @@ clean:
 	rm -f *.a *.out *.o $(TEST_DIR)*.o $(TEST_DIR).out *.gcno *.gcda *.info *.info.cleaned
 	rm -rf $(VALGRIND_REPORT_DIRECTORY_FOR_DOCKER_CONTAINER) coverage_report
 
-# TODO: Style check target
+check_style:
+	-clang-format --style=Google -n *.cc
+	-clang-format --style=Google -n *.h
+	-clang-format --style=Google -n tests/*.cc
+	-clang-format --style=Google -n tests/*.h
+
+style_google:
+	-clang-format --style=Google -i *.cc
+	-clang-format --style=Google -i *.h
+	-clang-format --style=Google -i tests/*.cc
+	-clang-format --style=Google -i tests/*.h
 
 valgrind: test
 	mkdir -p $(VALGRIND_REPORT_DIRECTORY_FOR_DOCKER_CONTAINER)
