@@ -5,12 +5,16 @@
 void S21Matrix::are_matrices_valid_exception_check(
     const S21Matrix& other) const {
   if (this->is_invalid_matrix() || other.is_invalid_matrix()) {
+  // (this) this-> лишнее. Да, с ним легче понимать, чей метод вызываешь, но это только на первом этапе.
+  // Далее его необходимо писать надо только при обращении к полям или методам родительского класса-шаблона, вот там без него работать не будет
+      
     throw InvalidMatrixException("Matrix dimensions must be greater than zero");
   }
 }
 
 void S21Matrix::is_matrix_valid_exception_check() const {
   if (this->is_invalid_matrix()) {
+      // (this)
     throw InvalidMatrixException("Matrix dimensions must be greater than zero");
   }
 }
