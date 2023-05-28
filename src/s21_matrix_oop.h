@@ -1,18 +1,45 @@
+// общее: 
+// если метод не выбрасывает исключение, он должен быть noexcept
+// если метод не меняет поля класса, он должен быть const
+// если метод вообще не обращается к полям класса, он должен быть static 
+
+
+
+
 #ifndef S21_CPP_MATRIX_H
 #define S21_CPP_MATRIX_H
+
 
 #include <iostream>
 #include <cmath>
 #include "s21_exception_handling.h"
+// заголовочные файлы надо перенести в .cc.
+// Так будет меньше включений в том файле, который подключит этот файл s21_matrix_oop.h в качестве заголовочного
+
+
+// в целом нужно соблюсти порядок private полей, методов, public полей, методов. То есть что сначала идет в классе, а что в конце по гугл стилю
+
 
 class S21Matrix {
     private:
         int rows_, cols_;
         double **matrix_;
 		static constexpr double EPSILON = 1e-7;
+		// именование: kEpsilon
+		// https://google.github.io/styleguide/cppguide.html#Constant_Names
+	
+	
+	
 	private:
 		// Private functions for internal use
 		bool is_invalid_matrix() const;
+		// именование: is_invalid слово matrix лишнее.
+		// Очень хорошо, что ты стараешься писать понятно, но matrix лишнее, потому что мы уже находимся в классе S21Matrix 
+		// и понятно, что valid к матрице относится
+		// Аналогично и имена других методов
+	
+	
+	
 		bool are_different_sizes(const S21Matrix& other) const;
 		bool matrix_is_not_squared() const;
 		void count(const S21Matrix& other, char operand, double mult_num);
