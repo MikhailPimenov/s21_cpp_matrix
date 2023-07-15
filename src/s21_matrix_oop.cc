@@ -4,7 +4,7 @@
 
 S21Matrix::S21Matrix()
 	: rows_(3), cols_(3) {
-    setElementsConst();
+    SetElementsConst();
 }
 
 S21Matrix::~S21Matrix() {
@@ -119,14 +119,14 @@ S21Matrix S21Matrix::CalcComplements() {
 	is_matrix_squared_exception_check();
 	if (rows_ == 1) {
 		S21Matrix result(1, 1);
-		result.setElement(0, 0, matrix_[0][0]);
+		result.SetElement(0, 0, matrix_[0][0]);
 		return result;
 	} else if (rows_ == 2) {
 		S21Matrix result(2, 2);
-		result.setElement(0, 0, matrix_[1][1]);
-		result.setElement(0, 1, matrix_[1][0]);
-		result.setElement(1, 0, matrix_[0][1]);
-		result.setElement(1, 1, matrix_[0][0]);
+		result.SetElement(0, 0, matrix_[1][1]);
+		result.SetElement(0, 1, matrix_[1][0]);
+		result.SetElement(1, 0, matrix_[0][1]);
+		result.SetElement(1, 1, matrix_[0][0]);
 		return result;
 	} else {
 		S21Matrix res_matrix(rows_, cols_);
@@ -137,7 +137,7 @@ S21Matrix S21Matrix::CalcComplements() {
 				get_cofactor(temp, row_i, col_i, rows_);
 				temp_res = get_determinant(temp, temp.rows_);
 				get_algebraic_complement(&temp_res, row_i, col_i);
-				res_matrix.setElement(row_i, col_i, temp_res);
+				res_matrix.SetElement(row_i, col_i, temp_res);
 			}
 		}
 		return res_matrix;
@@ -240,5 +240,5 @@ S21Matrix& S21Matrix::operator=(const S21Matrix& other) {
 }
 
 double S21Matrix::operator()(int i, int j) {
-	return (this->getElement(i, j));
+	return (this->GetElement(i, j));
 }

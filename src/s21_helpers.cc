@@ -2,7 +2,7 @@
 
 // Setters and getters:
 
-void S21Matrix::setRows(int rows) {
+void S21Matrix::SetRows(int rows) {
 //	if (rows > 0) {
 	    rows_ = rows;
 //	} else {
@@ -10,11 +10,11 @@ void S21Matrix::setRows(int rows) {
 //	}
 }
 
-int S21Matrix::getRows() const {
+int S21Matrix::GetRows() const {
     return rows_;
 }
 
-void S21Matrix::setCols(int cols) {
+void S21Matrix::SetCols(int cols) {
 //    if (cols > 0) {
 	    cols_ = cols;
 //	} else {
@@ -22,11 +22,11 @@ void S21Matrix::setCols(int cols) {
 //	}
 }
 
-int S21Matrix::getCols() const {
+int S21Matrix::GetCols() const {
     return cols_;
 }
 
-double S21Matrix::getElement(int row, int col) const {
+double S21Matrix::GetElement(int row, int col) const {
     if (row >= 0 && row < rows_ && col >= 0 && col < cols_) {
         return matrix_[row][col];
     } else {
@@ -34,11 +34,11 @@ double S21Matrix::getElement(int row, int col) const {
     }
 }
 
-void S21Matrix::setElement(int row, int col, double value) {
+void S21Matrix::SetElement(int row, int col, double value) {
 	matrix_[row][col] = value;
 }
 
-void S21Matrix::setElementsConst() {
+void S21Matrix::SetElementsConst() {
 	try {
 		matrix_ = new double*[rows_];
 		for (int i = 0; i < rows_; ++i) {
@@ -115,15 +115,17 @@ void S21Matrix::get_algebraic_complement(double* res, int row_i, int col_i) {
 }
 
 // Additional helper functions:
+// GCOVR_EXCL_START
 // Used for troubleshooting
-//void S21Matrix::print_out_matrix() const {
-//    for (int i = 0; i < getRows(); ++i) {
-//        for (int j = 0; j < getCols(); ++j) {
-//            std::cout << getElement(i, j) << " ";
-//        }
-//        std::cout << std::endl;
-//    }
-//}
+void S21Matrix::Print_out_matrix() const {
+    for (int i = 0; i < GetRows(); ++i) {
+        for (int j = 0; j < GetCols(); ++j) {
+            std::cout << GetElement(i, j) << " ";
+        }
+        std::cout << std::endl;
+    }
+}
+// GCOV_EXCL_STOP
 
 bool S21Matrix::are_different_sizes(const S21Matrix& other) const {
 	return (other.rows_ != rows_ || other.cols_ != cols_);
@@ -137,7 +139,7 @@ bool S21Matrix::matrix_is_not_squared() const {
 	return rows_ != cols_;
 }
 
-bool S21Matrix::matrix_is_null() const {
+bool S21Matrix::Matrix_is_null() const {
 	return (matrix_ == nullptr);
 }
 
