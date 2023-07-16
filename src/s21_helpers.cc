@@ -4,27 +4,58 @@
 
 void S21Matrix::SetRows(int rows) {
 	if (rows > 0) {
-		//TODO: Rows bigger
-		//TODO: Rows less
-		rows_ = rows;
+		if (rows != rows_) {
+			S21Matrix temp(rows, cols_);
+			const int minRow = std::min(rows, rows_);
+			
+			for (int row = 0; row < minRow; ++row) {
+				for (int col = 0; col < cols_; ++col) {
+					temp(row, col) = matrix_[row][col];
+				}
+			}
+
+			for (int row = minRow; row < temp.rows_; ++row) {
+				for (int col = 0; col < cols_; ++col) {
+					temp(row, col) = 0.0;
+				}
+			}
+			*this = std::move(temp);
+		}
 	} else {
 		throw std::out_of_range("Rows cannot be less than 1");
 	}
 }
 
-int S21Matrix::GetRows() const {
+int S21Matrix::GetRows() const noexcept{
     return rows_;
 }
 
 void S21Matrix::SetCols(int cols) {
-    if (cols > 0) {
-	    cols_ = cols;
+	if (cols > 0) {
+		if (cols != cols_) {
+			S21Matrix temp(rows_, cols);
+			const int minCol = std::min(cols, cols_);
+
+			for (int row = 0; row < rows_; ++row) {
+				for (int col = 0; col < minCol; ++col) {
+					temp(row, col) = matrix_[row][col];
+				}
+			}
+
+			for (int row = 0; row < rows_; ++row) {
+				for (int col = minCol; col < temp.cols_; ++col) {
+					temp(row, col) = 0.0;
+				}
+			}
+
+			*this = std::move(temp);
+		}
 	} else {
 		throw std::out_of_range("Cols cannot be less than 1");
 	}
 }
 
-int S21Matrix::GetCols() const {
+int S21Matrix::GetCols() const noexcept {
     return cols_;
 }
 

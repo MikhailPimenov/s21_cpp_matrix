@@ -52,12 +52,13 @@ class S21Matrix {
 	S21Matrix& operator-=(const S21Matrix& other);
 	S21Matrix& operator*=(const S21Matrix& other);
 	S21Matrix& operator*=(const double num);
-	double operator()(int i, int j);
+	double& operator()(int row, int col);
+	double operator()(int row, int col) const;
 	// Setters, getters and additional helper functions
 	void SetRows(int rows);
-    int GetRows() const;
+    int GetRows() const noexcept;
 	void SetCols(int cols);
-	int GetCols() const;
+	int GetCols() const noexcept;
 	double GetElement(int row, int col) const;
 	void SetElement(int row, int col, double value);
 	void SetElementsConst();

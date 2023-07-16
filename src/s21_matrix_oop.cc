@@ -239,6 +239,10 @@ S21Matrix& S21Matrix::operator=(const S21Matrix& other) {
     return *this;
 }
 
-double S21Matrix::operator()(int i, int j) {
-	return (this->GetElement(i, j));
+double& S21Matrix::operator()(int row, int col) {
+	return matrix_[row][col];
+}
+
+double S21Matrix::operator()(int row, int col) const {
+	return (this->GetElement(row, col));
 }
