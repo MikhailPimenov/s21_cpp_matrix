@@ -3,11 +3,13 @@
 // Setters and getters:
 
 void S21Matrix::SetRows(int rows) {
-//	if (rows > 0) {
-	    rows_ = rows;
-//	} else {
-//		throw std::out_of_range("Rows cannot be less than 1");
-//	}
+	if (rows > 0) {
+		//TODO: Rows bigger
+		//TODO: Rows less
+		rows_ = rows;
+	} else {
+		throw std::out_of_range("Rows cannot be less than 1");
+	}
 }
 
 int S21Matrix::GetRows() const {
@@ -15,11 +17,11 @@ int S21Matrix::GetRows() const {
 }
 
 void S21Matrix::SetCols(int cols) {
-//    if (cols > 0) {
+    if (cols > 0) {
 	    cols_ = cols;
-//	} else {
-//		throw std::out_of_range("Cols cannot be less than 1");
-//	}
+	} else {
+		throw std::out_of_range("Cols cannot be less than 1");
+	}
 }
 
 int S21Matrix::GetCols() const {
