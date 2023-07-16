@@ -869,7 +869,7 @@ TEST(MatrixTest, DestructorTest) {
 
 	int rows = input.GetRows();
 	int cols = input.GetCols();
-	bool is_null = input.Matrix_is_null();
+	bool is_null = input.MatrixIsNull();
 	
 	ASSERT_EQ(rows, 0);
 	ASSERT_EQ(cols, 0);

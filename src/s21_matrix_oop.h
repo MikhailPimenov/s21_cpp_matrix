@@ -11,23 +11,23 @@ class S21Matrix {
         double **matrix_;
 	static constexpr double EPSILON = 1e-7;
 	// Private functions for internal use
-	bool is_invalid_matrix() const;
-	bool are_different_sizes(const S21Matrix& other) const;
-	bool matrix_is_not_squared() const;
+	bool isInvalidMatrix() const;
+	bool areDifferentSizes(const S21Matrix& other) const;
+	bool matrixIsNotSquared() const;
 	void count(const S21Matrix& other, char operand, double mult_num);
-	void get_cofactor(S21Matrix& temp, int skip_row, int skip_col, int size) const;
-	double get_determinant(const S21Matrix& matrix, int size);
-	void get_algebraic_complement(double* res, int row_i, int col_i);
+	void getCofactor(S21Matrix& temp, int skip_row, int skip_col, int size) const;
+	double getDeterminant(const S21Matrix& matrix, int size);
+	void getAlgebraicComplement(double* res, int row_i, int col_i);
 	// Exceptions
-	void is_matrix_valid_exception_check() const;
-	void are_matrices_valid_exception_check(const S21Matrix& other) const;
-	void are_dimensions_equal_exception_check(const S21Matrix& other) const;
-	void is_matrix_squared_exception_check() const;
+	void isMatrixValidExceptionCheck() const;
+	void areMatricesValidExceptionCheck(const S21Matrix& other) const;
+	void areDimensionsEqualExceptionCheck(const S21Matrix& other) const;
+	void isMatrixSquaredExceptionCheck() const;
 
     public:
 	// Constructors
-        S21Matrix();
-        S21Matrix(int rows, int cols);
+    S21Matrix();
+    S21Matrix(int rows, int cols);
 	~S21Matrix();
 	S21Matrix(const S21Matrix& other);
 	S21Matrix(S21Matrix&& other);
@@ -54,15 +54,15 @@ class S21Matrix {
 	S21Matrix& operator*=(const double num);
 	double operator()(int i, int j);
 	// Setters, getters and additional helper functions
-        void SetRows(int rows);
-        int GetRows() const;
-        void SetCols(int cols);
-        int GetCols() const;
-        double GetElement(int row, int col) const;
+	void SetRows(int rows);
+    int GetRows() const;
+	void SetCols(int cols);
+	int GetCols() const;
+	double GetElement(int row, int col) const;
 	void SetElement(int row, int col, double value);
-        void SetElementsConst();
-	void Print_out_matrix() const;
-	bool Matrix_is_null() const;
+	void SetElementsConst();
+	void PrintOutMatrix() const;
+	bool MatrixIsNull() const;
 };
 
 #endif /* S21_CPP_MATRIX_H */

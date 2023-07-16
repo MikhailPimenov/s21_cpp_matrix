@@ -78,7 +78,7 @@ void S21Matrix::count(const S21Matrix& other, char operand, double mult_num) {
 	}
 }
 
-void S21Matrix::get_cofactor(S21Matrix& temp, int skip_row, int skip_col, int size) const {
+void S21Matrix::getCofactor(S21Matrix& temp, int skip_row, int skip_col, int size) const {
 	for (int temp_row_i = 0, read_row_i = 0; read_row_i < size; ++read_row_i) {
 		if (read_row_i == skip_row) {
 			continue;
@@ -94,7 +94,7 @@ void S21Matrix::get_cofactor(S21Matrix& temp, int skip_row, int skip_col, int si
 	}
 }
 
-double S21Matrix::get_determinant(const S21Matrix& matrix, int size) {
+double S21Matrix::getDeterminant(const S21Matrix& matrix, int size) {
 	double res = 0.0;
 	if (size == 1) {
 		res = matrix.matrix_[0][0];
@@ -102,22 +102,22 @@ double S21Matrix::get_determinant(const S21Matrix& matrix, int size) {
 		S21Matrix temp(size - 1, size - 1);
 		int sign = 1;
 		for (int col_index = 0; col_index < size; ++col_index) {
-			matrix.get_cofactor(temp, 0, col_index, size);
-			res += sign * matrix.matrix_[0][col_index] * get_determinant(temp, temp.rows_);
+			matrix.getCofactor(temp, 0, col_index, size);
+			res += sign * matrix.matrix_[0][col_index] * getDeterminant(temp, temp.rows_);
 			sign *= -1;
 		}
 	}
 	return res;
 }
 
-void S21Matrix::get_algebraic_complement(double* res, int row_i, int col_i) {
+void S21Matrix::getAlgebraicComplement(double* res, int row_i, int col_i) {
 	*res *= pow(-1.0, row_i + col_i + 2);
 }
 
 // Additional helper functions:
 // GCOVR_EXCL_START
 // Used for troubleshooting
-void S21Matrix::Print_out_matrix() const {
+void S21Matrix::PrintOutMatrix() const {
     for (int i = 0; i < GetRows(); ++i) {
         for (int j = 0; j < GetCols(); ++j) {
             std::cout << GetElement(i, j) << " ";
@@ -127,19 +127,19 @@ void S21Matrix::Print_out_matrix() const {
 }
 // GCOV_EXCL_STOP
 
-bool S21Matrix::are_different_sizes(const S21Matrix& other) const {
+bool S21Matrix::areDifferentSizes(const S21Matrix& other) const {
 	return (other.rows_ != rows_ || other.cols_ != cols_);
 }
 
-bool S21Matrix::is_invalid_matrix() const {
+bool S21Matrix::isInvalidMatrix() const {
 	return (rows_ < 1 || cols_ < 1); 
 }
 
-bool S21Matrix::matrix_is_not_squared() const {
+bool S21Matrix::matrixIsNotSquared() const {
 	return rows_ != cols_;
 }
 
-bool S21Matrix::Matrix_is_null() const {
+bool S21Matrix::MatrixIsNull() const {
 	return (matrix_ == nullptr);
 }
 

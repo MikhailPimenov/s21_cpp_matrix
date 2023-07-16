@@ -51,7 +51,7 @@ S21Matrix::S21Matrix(int rows, int cols)
 
 bool S21Matrix::EqMatrix(const S21Matrix& other) {
 	bool are_equal = true;
-	if (are_different_sizes(other)) {
+	if (areDifferentSizes(other)) {
 		are_equal = false;
 	} else {
 		for (int i = 0; i < rows_; ++i) {
@@ -66,24 +66,24 @@ bool S21Matrix::EqMatrix(const S21Matrix& other) {
 }
 
 void S21Matrix::SumMatrix(const S21Matrix& other) {
-	are_matrices_valid_exception_check(other);
-	are_dimensions_equal_exception_check(other);
+	areMatricesValidExceptionCheck(other);
+	areDimensionsEqualExceptionCheck(other);
 	count(other, '+', 0.0);
 }
 
 void S21Matrix::SubMatrix(const S21Matrix& other) {
-	are_matrices_valid_exception_check(other);
-	are_dimensions_equal_exception_check(other);
+	areMatricesValidExceptionCheck(other);
+	areDimensionsEqualExceptionCheck(other);
 	count(other, '-', 0.0);
 }
 
 void S21Matrix::MultNumber(const double num) {
-	is_matrix_valid_exception_check();
+	isMatrixValidExceptionCheck();
 	count(*this, 'n', num);
 }
 
 void S21Matrix::MultMatrix(const S21Matrix& other) {
-	are_matrices_valid_exception_check(other);
+	areMatricesValidExceptionCheck(other);
 	if (cols_ != other.rows_) {
 		throw MultInvalidMatrixSizeException("Numnber of rows of the first matrix must be equal to the number of cols of the second matrix to perform the multiplication");
 	} else {
@@ -104,7 +104,7 @@ void S21Matrix::MultMatrix(const S21Matrix& other) {
 }
 
 S21Matrix S21Matrix::Transpose() {
-	is_matrix_valid_exception_check();
+	isMatrixValidExceptionCheck();
 	S21Matrix result(cols_, rows_);
 	for (int row_i = 0; row_i < rows_; ++row_i) {
 		for (int col_i = 0; col_i < cols_; ++col_i) {
@@ -115,8 +115,8 @@ S21Matrix S21Matrix::Transpose() {
 }
 
 S21Matrix S21Matrix::CalcComplements() {
-	is_matrix_valid_exception_check();
-	is_matrix_squared_exception_check();
+	isMatrixValidExceptionCheck();
+	isMatrixSquaredExceptionCheck();
 	if (rows_ == 1) {
 		S21Matrix result(1, 1);
 		result.SetElement(0, 0, matrix_[0][0]);
@@ -134,9 +134,9 @@ S21Matrix S21Matrix::CalcComplements() {
 		for (int row_i = 0; row_i < rows_; ++row_i) {
 			for (int col_i = 0; col_i < cols_; ++col_i) {
 				S21Matrix temp(rows_ - 1, cols_ - 1);
-				get_cofactor(temp, row_i, col_i, rows_);
-				temp_res = get_determinant(temp, temp.rows_);
-				get_algebraic_complement(&temp_res, row_i, col_i);
+				getCofactor(temp, row_i, col_i, rows_);
+				temp_res = getDeterminant(temp, temp.rows_);
+				getAlgebraicComplement(&temp_res, row_i, col_i);
 				res_matrix.SetElement(row_i, col_i, temp_res);
 			}
 		}
@@ -146,19 +146,19 @@ S21Matrix S21Matrix::CalcComplements() {
 }
 
 double S21Matrix::Determinant() {
-	is_matrix_valid_exception_check();
-	is_matrix_squared_exception_check();
+	isMatrixValidExceptionCheck();
+	isMatrixSquaredExceptionCheck();
 	double res = 0.0;
 	if (rows_ == 1) {
 		res = matrix_[0][0];
 	} else {
-		res = get_determinant(*this, rows_);
+		res = getDeterminant(*this, rows_);
 	}
 	return res;
 }
 
 S21Matrix S21Matrix::InverseMatrix() {
-	is_matrix_valid_exception_check();
+	isMatrixValidExceptionCheck();
 	double det_res = 0.0;
 	det_res = this->Determinant();
 	if (fabs(det_res) < EPSILON) {
