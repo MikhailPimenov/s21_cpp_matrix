@@ -68,7 +68,11 @@ double S21Matrix::GetElement(int row, int col) const {
 }
 
 void S21Matrix::SetElement(int row, int col, double value) {
-	matrix_[row][col] = value;
+	if ((row >= 0 && row <= rows_) && (col >= 0 && col <= cols_)) {
+		matrix_[row][col] = value;
+	} else {
+		throw std::out_of_range("Index out of range");
+	}
 }
 
 void S21Matrix::SetElementsConst() {
