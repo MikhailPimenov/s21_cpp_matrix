@@ -96,8 +96,9 @@ void S21Matrix::SetElementsConst() {
 // Calculation helpers:
 
 void S21Matrix::count(const S21Matrix& other, char operand, double mult_num) {
-	int row_i = 0, col_i = 0;
+	int row_i = 0;
 	while (row_i < rows_) {
+		int col_i = 0;
 		while (col_i < cols_) {
 			if (operand == '+') {
 				matrix_[row_i][col_i] = other.matrix_[row_i][col_i] + matrix_[row_i][col_i];
@@ -110,7 +111,6 @@ void S21Matrix::count(const S21Matrix& other, char operand, double mult_num) {
 			}
 			++col_i;
 		}
-		col_i = 0;
 		++row_i;
 	}
 }
