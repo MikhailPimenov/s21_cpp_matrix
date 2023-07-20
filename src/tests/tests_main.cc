@@ -1,5 +1,6 @@
 #include <gtest/gtest.h>
 #include "../s21_matrix_oop.h"
+#include "../s21_exception_handling.h"
 
 TEST(MatrixTest, EqMatrixElementsAreEqual) {
 	S21Matrix matrix1;
@@ -869,7 +870,7 @@ TEST(MatrixTest, DestructorTest) {
 
 	int rows = input.GetRows();
 	int cols = input.GetCols();
-	bool is_null = input.MatrixIsNull();
+	bool is_null = input.isNull();
 	
 	ASSERT_EQ(rows, 0);
 	ASSERT_EQ(cols, 0);

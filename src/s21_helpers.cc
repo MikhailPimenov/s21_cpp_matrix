@@ -63,7 +63,7 @@ double S21Matrix::GetElement(int row, int col) const {
     if (row >= 0 && row < rows_ && col >= 0 && col < cols_) {
         return matrix_[row][col];
     } else {
-        throw std::out_of_range("Index out of range");
+        throw std::out_of_range("Index is invalid. Index should be >= 0");
     }
 }
 
@@ -71,31 +71,13 @@ void S21Matrix::SetElement(int row, int col, double value) {
 	if ((row >= 0 && row <= rows_) && (col >= 0 && col <= cols_)) {
 		matrix_[row][col] = value;
 	} else {
-		throw std::out_of_range("Index out of range");
-	}
-}
-
-void S21Matrix::SetElementsConst() {
-	try {
-		matrix_ = new double*[rows_];
-		for (int i = 0; i < rows_; ++i) {
-			matrix_[i] = new double[cols_];
-	    }
-		double element = 0.0;
-	    for (int i = 0; i < rows_; ++i) {
-		    for (int j = 0; j < cols_; ++j) {
-			    matrix_[i][j] = element;
-				++element;
-	        }
-	    }
-	} catch (std::bad_alloc& ba) {
-		std::cerr << "bad_alloc caught: " << ba.what() << '\n';
+		throw std::out_of_range("Index is invalid. Index should be >= 0");
 	}
 }
 
 // Calculation helpers:
 
-void S21Matrix::count(const S21Matrix& other, char operand, double mult_num) {
+void S21Matrix::count(const S21Matrix& other, char operand, double mult_num) noexcept {
 	int row_i = 0;
 	while (row_i < rows_) {
 		int col_i = 0;
@@ -154,7 +136,7 @@ void S21Matrix::getAlgebraicComplement(double* res, int row_i, int col_i) {
 // Additional helper functions:
 // GCOVR_EXCL_START
 // Used for troubleshooting
-void S21Matrix::PrintOutMatrix() const {
+void S21Matrix::Print() const {
     for (int i = 0; i < GetRows(); ++i) {
         for (int j = 0; j < GetCols(); ++j) {
             std::cout << GetElement(i, j) << " ";
@@ -168,15 +150,15 @@ bool S21Matrix::areDifferentSizes(const S21Matrix& other) const {
 	return (other.rows_ != rows_ || other.cols_ != cols_);
 }
 
-bool S21Matrix::isInvalidMatrix() const {
+bool S21Matrix::isInvalid() const {
 	return (rows_ < 1 || cols_ < 1); 
 }
 
-bool S21Matrix::matrixIsNotSquared() const {
+bool S21Matrix::isNotSquared() const {
 	return rows_ != cols_;
 }
 
-bool S21Matrix::MatrixIsNull() const {
+bool S21Matrix::isNull() const {
 	return (matrix_ == nullptr);
 }
 
