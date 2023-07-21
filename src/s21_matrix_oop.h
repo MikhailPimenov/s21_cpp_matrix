@@ -31,7 +31,7 @@ class S21Matrix {
 	S21Matrix(const S21Matrix& other);
 	S21Matrix(S21Matrix&& other);
 	// Main matrix functions
-	bool EqMatrix(const S21Matrix& other);
+	bool EqMatrix(const S21Matrix& other) const noexcept;
 	void SumMatrix(const S21Matrix& other);
 	void SubMatrix(const S21Matrix& other);
 	void MultNumber(const double num);
@@ -41,16 +41,17 @@ class S21Matrix {
 	double Determinant();
 	S21Matrix InverseMatrix();
 	// Operator overloading
-	S21Matrix& operator+(const S21Matrix& other);
-	S21Matrix& operator-(const S21Matrix& other);
-	S21Matrix& operator*(const S21Matrix& other);
-	S21Matrix& operator*(const double num);
-	bool operator==(const S21Matrix& other);
+	friend S21Matrix operator+(const S21Matrix& left, const S21Matrix& right);
+	friend S21Matrix operator-(const S21Matrix& left, const S21Matrix& right);
+	friend S21Matrix operator*(const S21Matrix& left, const S21Matrix& right);
+	friend S21Matrix operator*(const S21Matrix left, const double number);
+	friend bool operator==(const S21Matrix& left, const S21Matrix& right) noexcept;
+	// TODO: Copy assignment operator rework
 	S21Matrix& operator=(const S21Matrix& other);
-	S21Matrix& operator+=(const S21Matrix& other);
-	S21Matrix& operator-=(const S21Matrix& other);
-	S21Matrix& operator*=(const S21Matrix& other);
-	S21Matrix& operator*=(const double num);
+	friend S21Matrix operator+=(const S21Matrix& left, const S21Matrix& right);
+	friend S21Matrix operator-=(const S21Matrix& left, const S21Matrix& right);
+	friend S21Matrix operator*=(const S21Matrix& left, const S21Matrix& right);
+	friend S21Matrix operator*=(const S21Matrix& left, const double num);
 	double& operator()(int row, int col);
 	double operator()(int row, int col) const;
 	// Setters, getters and additional helper functions

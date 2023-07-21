@@ -61,7 +61,7 @@ S21Matrix::S21Matrix(int rows, int cols)
 
 // Main matrix functions:
 
-bool S21Matrix::EqMatrix(const S21Matrix& other) {
+bool S21Matrix::EqMatrix(const S21Matrix& other) const noexcept {
 	bool are_equal = true;
 	if (areDifferentSizes(other)) {
 		are_equal = false;
@@ -179,48 +179,56 @@ S21Matrix S21Matrix::InverseMatrix() {
 
 // Operator overloading:
 
-S21Matrix& S21Matrix::operator+(const S21Matrix& other) {
-	this->SumMatrix(other);
-	return *this;
+S21Matrix operator+(const S21Matrix& left, const S21Matrix& right) {
+	S21Matrix result = left;
+	result.SumMatrix(right);
+	return result;
 }
 
-S21Matrix& S21Matrix::operator-(const S21Matrix& other) {
-	this->SubMatrix(other);
-	return *this;
+S21Matrix operator-(const S21Matrix& left, const S21Matrix& right) {
+	S21Matrix result = left;
+	result.SubMatrix(right);
+	return result;
 }
 
-S21Matrix& S21Matrix::operator*(const S21Matrix& other) {
-	this->MultMatrix(other);
-	return *this;
+S21Matrix operator*(const S21Matrix& left, const S21Matrix& right) {
+	S21Matrix result = left;
+	result.MultMatrix(right);
+	return result;
 }
 
-S21Matrix& S21Matrix::operator*(const double number) {
-	this->MultNumber(number);
-	return *this;
+S21Matrix operator*(const S21Matrix left, const double number) {
+	S21Matrix result = left;
+	result.MultNumber(number);
+	return result;
 }
 
-bool S21Matrix::operator==(const S21Matrix& other) {
-	return(this->EqMatrix(other));
+bool operator==(const S21Matrix& left, const S21Matrix& right) noexcept {
+	return left.EqMatrix(right);
 }
 
-S21Matrix& S21Matrix::operator+=(const S21Matrix& other) {
-	this->SumMatrix(other);
-	return *this;
+S21Matrix operator+=(const S21Matrix& left, const S21Matrix& right) {
+	S21Matrix result = left;
+	result.SumMatrix(right);
+	return result;
 }
 
-S21Matrix& S21Matrix::operator-=(const S21Matrix& other) {
-	this->SubMatrix(other);
-	return *this;
+S21Matrix operator-=(const S21Matrix& left, const S21Matrix& right) {
+	S21Matrix result = left;
+	result.SubMatrix(right);
+	return result;
 }
 
-S21Matrix& S21Matrix::operator*=(const S21Matrix& other) {
-	this->MultMatrix(other);
-	return *this;
+S21Matrix operator*=(const S21Matrix& left, const S21Matrix& right) {
+	S21Matrix result = left;
+	result.MultMatrix(right);
+	return result;
 }
 
-S21Matrix& S21Matrix::operator*=(const double num) {
-	this->MultNumber(num);
-	return *this;
+S21Matrix operator*=(const S21Matrix& left, const double num) {
+	S21Matrix result = left;
+	result.MultNumber(num);
+	return result;
 }
 
 // Copy assignment operator
@@ -247,5 +255,5 @@ double& S21Matrix::operator()(int row, int col) {
 }
 
 double S21Matrix::operator()(int row, int col) const {
-	return (this->GetElement(row, col));
+	return GetElement(row, col);
 }

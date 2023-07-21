@@ -122,9 +122,9 @@ TEST(MatrixTest, SumOperatorMatrix) {
 		}
 	}
 
-	matrix1 + matrix2;
+	S21Matrix actual_result = matrix1 + matrix2;
 
-	EXPECT_TRUE(matrix1.EqMatrix(expected_matrix));
+	EXPECT_TRUE(actual_result.EqMatrix(expected_matrix));
 }
 
 TEST(MatrixTest, SumOperatorMatrixMatricesAreInvalid) {
@@ -158,9 +158,9 @@ TEST(MatrixTest, AdditionAssignmentOperatorMatrix) {
 		}
 	}
 
-	matrix1 += matrix2;
+	S21Matrix actual_result = matrix1 += matrix2;
 
-	EXPECT_TRUE(matrix1.EqMatrix(expected_matrix));
+	EXPECT_TRUE(actual_result.EqMatrix(expected_matrix));
 }
 
 TEST(MatrixTest, AdditionAssignmentOperatorMatricesAreInvalid) {
@@ -233,9 +233,9 @@ TEST(MatrixTest, SubOperatorMatrix) {
 		}
 	}
 
-	matrix1 - matrix2;
+	S21Matrix actual_result = matrix1 - matrix2;
 
-	EXPECT_TRUE(matrix1.EqMatrix(expected_matrix));
+	EXPECT_TRUE(actual_result.EqMatrix(expected_matrix));
 }
 
 TEST(MatrixTest, SubOperatorMatricesAreInvalid) {
@@ -268,9 +268,9 @@ TEST(MatrixTest, DifferenceAssignmentOperatorMatrix) {
 		}
 	}
 
-	matrix1 -= matrix2;
+	S21Matrix actual_result = matrix1 -= matrix2;
 
-	EXPECT_TRUE(matrix1.EqMatrix(expected_matrix));
+	EXPECT_TRUE(actual_result.EqMatrix(expected_matrix));
 }
 
 TEST(MatrixTest, DifferenceAssignmentOperatorMatricesAreInvalid) {
@@ -325,9 +325,9 @@ TEST(MatrixTest, MultByNumberOperator) {
 		}
 	}
 
-	matrix1 * 3.0;
+	S21Matrix actual_result = matrix1 * 3.0;
 
-	EXPECT_TRUE(matrix1.EqMatrix(expected_matrix));
+	EXPECT_TRUE(actual_result.EqMatrix(expected_matrix));
 }
 
 TEST(MatrixTest, MultByNumberOperatorInvalidMatrixException) {
@@ -348,9 +348,9 @@ TEST(MatrixTest, MultiplicationAssignmentOperatorMultNumber) {
 		}
 	}
 
-	matrix1 *= 3.0;
+	S21Matrix actual_result = matrix1 *= 3.0;
 
-	EXPECT_TRUE(matrix1.EqMatrix(expected_matrix));
+	EXPECT_TRUE(actual_result.EqMatrix(expected_matrix));
 }
 
 TEST(MatrixTest, MultiplicationAssignmentOperatorInvalidMatrixException) {
@@ -389,9 +389,10 @@ TEST(MatrixTest, MultMatrixBasic) {
     expected_matrix.SetElement(2, 1, 10.0);
     expected_matrix.SetElement(2, 2, 15.0);
 
-	matrix1.MultMatrix(matrix2);
+	S21Matrix actual_result = matrix1;
+	actual_result.MultMatrix(matrix2);
 
-	EXPECT_TRUE(matrix1.EqMatrix(expected_matrix));
+	EXPECT_TRUE(actual_result.EqMatrix(expected_matrix));
 }
 
 TEST(MatrixTest, MultMatrixInvalidMatrixException) {
@@ -457,9 +458,10 @@ TEST(MatrixTest, MultMatrixOperator) {
     expected_matrix.SetElement(2, 1, 10.0);
     expected_matrix.SetElement(2, 2, 15.0);
 
-	matrix1 * matrix2;
+	S21Matrix acutal_result = matrix1;
+	acutal_result = matrix1 * matrix2;
 
-	EXPECT_TRUE(matrix1.EqMatrix(expected_matrix));
+	EXPECT_TRUE(acutal_result.EqMatrix(expected_matrix));
 }
 
 TEST(MatrixTest, MultiplicationAssignmentOperatorMultMatrix) {
@@ -492,9 +494,9 @@ TEST(MatrixTest, MultiplicationAssignmentOperatorMultMatrix) {
     expected_matrix.SetElement(2, 1, 10.0);
     expected_matrix.SetElement(2, 2, 15.0);
 
-	matrix1 *= matrix2;
+	S21Matrix actual_result = matrix1 *= matrix2;
 
-	EXPECT_TRUE(matrix1.EqMatrix(expected_matrix));
+	EXPECT_TRUE(actual_result.EqMatrix(expected_matrix));
 }
 
 TEST(MatrixTest, EqMatrixOperator) {
