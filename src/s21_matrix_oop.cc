@@ -3,7 +3,7 @@
 
 // Constructors:
 
-S21Matrix::S21Matrix()
+S21Matrix::S21Matrix() noexcept
 	: rows_(3), cols_(3) {
 		
 	matrix_ = new double*[rows_];
@@ -19,7 +19,7 @@ S21Matrix::S21Matrix()
 	}
 }
 
-S21Matrix::~S21Matrix() {
+S21Matrix::~S21Matrix() noexcept {
     for (int i = 0; i < rows_; i++) {
         delete [] matrix_[i];
     }
@@ -29,7 +29,7 @@ S21Matrix::~S21Matrix() {
 	matrix_ = nullptr;
 }
 
-S21Matrix::S21Matrix(const S21Matrix& other) 
+S21Matrix::S21Matrix(const S21Matrix& other) noexcept
 	: rows_(other.rows_), cols_(other.cols_) {
     matrix_ = new double*[rows_];
     for (int row_i = 0; row_i < rows_; ++row_i) {
@@ -40,7 +40,7 @@ S21Matrix::S21Matrix(const S21Matrix& other)
     }
 }
 
-S21Matrix::S21Matrix(S21Matrix&& other)
+S21Matrix::S21Matrix(S21Matrix&& other) noexcept
 	: rows_(other.rows_), cols_(other.cols_), matrix_(other.matrix_) {
 	other.rows_ = 0;
 	other.cols_ = 0;
@@ -91,7 +91,7 @@ void S21Matrix::SubMatrix(const S21Matrix& other) {
 	count(other, '-', 0.0);
 }
 
-void S21Matrix::MultNumber(const double num) {
+void S21Matrix::MultNumber(const double num) noexcept {
 	count(*this, 'n', num);
 }
 
@@ -114,7 +114,7 @@ void S21Matrix::MultMatrix(const S21Matrix& other) {
 	} 
 }
 
-S21Matrix S21Matrix::Transpose() const {
+S21Matrix S21Matrix::Transpose() const noexcept {
 	S21Matrix result(cols_, rows_);
 	for (int row_i = 0; row_i < rows_; ++row_i) {
 		for (int col_i = 0; col_i < cols_; ++col_i) {
@@ -124,7 +124,7 @@ S21Matrix S21Matrix::Transpose() const {
 	return result;
 }
 
-S21Matrix S21Matrix::CalcComplements() {
+S21Matrix S21Matrix::CalcComplements() const {
 	isMatrixSquaredExceptionCheck();
 	if (rows_ == 1) {
 		S21Matrix result(1, 1);
@@ -153,7 +153,7 @@ S21Matrix S21Matrix::CalcComplements() {
 	return res_matrix;
 }
 
-double S21Matrix::Determinant() {
+double S21Matrix::Determinant() const {
 	isMatrixSquaredExceptionCheck();
 	double res = 0.0;
 	if (rows_ == 1) {
@@ -164,7 +164,7 @@ double S21Matrix::Determinant() {
 	return res;
 }
 
-S21Matrix S21Matrix::InverseMatrix() {
+S21Matrix S21Matrix::InverseMatrix() const {
 	double det_res = 0.0;
 	det_res = Determinant();
 	if (fabs(det_res) < kEpsilon) {
@@ -197,7 +197,7 @@ S21Matrix operator*(const S21Matrix& left, const S21Matrix& right) {
 	return result;
 }
 
-S21Matrix operator*(const S21Matrix left, const double number) {
+S21Matrix operator*(const S21Matrix left, const double number) noexcept {
 	S21Matrix result = left;
 	result.MultNumber(number);
 	return result;
@@ -225,7 +225,7 @@ S21Matrix operator*=(const S21Matrix& left, const S21Matrix& right) {
 	return result;
 }
 
-S21Matrix operator*=(const S21Matrix& left, const double num) {
+S21Matrix operator*=(const S21Matrix& left, const double num) noexcept {
 	S21Matrix result = left;
 	result.MultNumber(num);
 	return result;
@@ -250,10 +250,10 @@ S21Matrix& S21Matrix::operator=(const S21Matrix& other) {
     return *this;
 }
 
-double& S21Matrix::operator()(int row, int col) {
+double& S21Matrix::operator()(int row, int col) noexcept {
 	return matrix_[row][col];
 }
 
-double S21Matrix::operator()(int row, int col) const {
+double S21Matrix::operator()(int row, int col) const noexcept {
 	return GetElement(row, col);
 }

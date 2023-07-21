@@ -25,35 +25,35 @@ class S21Matrix {
 
     public:
 	// Constructors
-    S21Matrix();
+    S21Matrix() noexcept;
     S21Matrix(int rows, int cols);
-	~S21Matrix();
-	S21Matrix(const S21Matrix& other);
-	S21Matrix(S21Matrix&& other);
+	~S21Matrix() noexcept;
+	S21Matrix(const S21Matrix& other) noexcept;
+	S21Matrix(S21Matrix&& other) noexcept;
 	// Main matrix functions
 	bool EqMatrix(const S21Matrix& other) const noexcept;
 	void SumMatrix(const S21Matrix& other);
 	void SubMatrix(const S21Matrix& other);
-	void MultNumber(const double num);
+	void MultNumber(const double num) noexcept;
 	void MultMatrix(const S21Matrix& other);
-	S21Matrix Transpose() const;
-	S21Matrix CalcComplements();
-	double Determinant();
-	S21Matrix InverseMatrix();
+	S21Matrix Transpose() const noexcept;
+	S21Matrix CalcComplements() const;
+	double Determinant() const;
+	S21Matrix InverseMatrix() const;
 	// Operator overloading
 	friend S21Matrix operator+(const S21Matrix& left, const S21Matrix& right);
 	friend S21Matrix operator-(const S21Matrix& left, const S21Matrix& right);
 	friend S21Matrix operator*(const S21Matrix& left, const S21Matrix& right);
-	friend S21Matrix operator*(const S21Matrix left, const double number);
+	friend S21Matrix operator*(const S21Matrix left, const double number) noexcept;
 	friend bool operator==(const S21Matrix& left, const S21Matrix& right) noexcept;
 	// TODO: Copy assignment operator rework
 	S21Matrix& operator=(const S21Matrix& other);
 	friend S21Matrix operator+=(const S21Matrix& left, const S21Matrix& right);
 	friend S21Matrix operator-=(const S21Matrix& left, const S21Matrix& right);
 	friend S21Matrix operator*=(const S21Matrix& left, const S21Matrix& right);
-	friend S21Matrix operator*=(const S21Matrix& left, const double num);
-	double& operator()(int row, int col);
-	double operator()(int row, int col) const;
+	friend S21Matrix operator*=(const S21Matrix& left, const double num) noexcept;
+	double& operator()(int row, int col) noexcept;
+	double operator()(int row, int col) const noexcept;
 	// Setters, getters and additional helper functions
 	void SetRows(int rows);
     int GetRows() const noexcept;
