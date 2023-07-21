@@ -2,6 +2,8 @@
 #include "../s21_matrix_oop.h"
 #include "../s21_exception_handling.h"
 
+// TODO: Creation of a matrix of invalid size (rows >= 0 || cols >= 0) using the S21Matrix constructor
+
 TEST(MatrixTest, EqMatrixElementsAreEqual) {
 	S21Matrix matrix1;
 	S21Matrix matrix2;
@@ -91,14 +93,6 @@ TEST(MatrixTest, SumMatrixBasic) {
 	EXPECT_TRUE(matrix1.EqMatrix(expected_matrix));
 }
 
-TEST(MatrixTest, SumMatrixMatricesAreInvalid) {
-	S21Matrix matrix1;
-	matrix1.SetCols(0);
-	S21Matrix matrix2;
-
-	EXPECT_THROW(matrix1.SumMatrix(matrix2), InvalidMatrixException);
-}
-
 TEST(MatrixTest, SumMatrixMatricesOfDifferentSizes) {
 	S21Matrix matrix1;
 	matrix1.SetCols(1);
@@ -125,14 +119,6 @@ TEST(MatrixTest, SumOperatorMatrix) {
 	S21Matrix actual_result = matrix1 + matrix2;
 
 	EXPECT_TRUE(actual_result.EqMatrix(expected_matrix));
-}
-
-TEST(MatrixTest, SumOperatorMatrixMatricesAreInvalid) {
-	S21Matrix matrix1;
-	matrix1.SetCols(0);
-	S21Matrix matrix2;
-
-	EXPECT_THROW(matrix1 + matrix2, InvalidMatrixException);
 }
 
 TEST(MatrixTest, SumOperatorMatrixMatricesOfDifferentSizes) {
@@ -163,16 +149,6 @@ TEST(MatrixTest, AdditionAssignmentOperatorMatrix) {
 	EXPECT_TRUE(actual_result.EqMatrix(expected_matrix));
 }
 
-TEST(MatrixTest, AdditionAssignmentOperatorMatricesAreInvalid) {
-	S21Matrix matrix1;
-	matrix1.SetCols(0);
-	S21Matrix matrix2;
-
-	EXPECT_THROW(matrix1 += matrix2, InvalidMatrixException);
-}
-
-
-
 TEST(MatrixTest, AdditionAssignmentOperatorMatricesOfDifferentSizes) {
 	S21Matrix matrix1;
 	matrix1.SetCols(1);
@@ -199,15 +175,6 @@ TEST(MatrixTest, SubMatrixBasic) {
 	matrix1.SubMatrix(matrix2);
 
 	EXPECT_TRUE(matrix1.EqMatrix(expected_matrix));
-}
-
-TEST(MatrixTest, SubMatrixMatricesAreInvalid) {
-	S21Matrix matrix1;
-	matrix1.SetCols(0);
-	S21Matrix matrix2;
-	S21Matrix expected_matrix;
-
-	EXPECT_THROW(matrix1.SubMatrix(matrix2), InvalidMatrixException);
 }
 
 TEST(MatrixTest, SubMatrixMatricesOfDifferentSizes) {
@@ -238,14 +205,6 @@ TEST(MatrixTest, SubOperatorMatrix) {
 	EXPECT_TRUE(actual_result.EqMatrix(expected_matrix));
 }
 
-TEST(MatrixTest, SubOperatorMatricesAreInvalid) {
-	S21Matrix matrix1;
-	matrix1.SetCols(0);
-	S21Matrix matrix2;
-
-	EXPECT_THROW(matrix1 - matrix2, InvalidMatrixException);
-}
-
 TEST(MatrixTest, SubOperatorMatricesOfDifferentSizes) {
 	S21Matrix matrix1;
 	matrix1.SetCols(1);
@@ -271,14 +230,6 @@ TEST(MatrixTest, DifferenceAssignmentOperatorMatrix) {
 	S21Matrix actual_result = matrix1 -= matrix2;
 
 	EXPECT_TRUE(actual_result.EqMatrix(expected_matrix));
-}
-
-TEST(MatrixTest, DifferenceAssignmentOperatorMatricesAreInvalid) {
-	S21Matrix matrix1;
-	matrix1.SetCols(0);
-	S21Matrix matrix2;
-
-	EXPECT_THROW(matrix1 -= matrix2, InvalidMatrixException);
 }
 
 TEST(MatrixTest, DifferenceAssignmentOperatorMatricesOfDifferentSizes) {
@@ -307,11 +258,6 @@ TEST(MatrixTest, MultByNumberBasic) {
 	EXPECT_TRUE(matrix1.EqMatrix(expected_matrix));
 }
 
-TEST(MatrixTest, MultByNumberInvalidMatrixException) {
-	S21Matrix matrix1(1, 0);
-	EXPECT_THROW(matrix1.MultNumber(1.0), InvalidMatrixException);
-}
-
 TEST(MatrixTest, MultByNumberOperator) {
 	S21Matrix matrix1;
 	S21Matrix expected_matrix;
@@ -328,11 +274,6 @@ TEST(MatrixTest, MultByNumberOperator) {
 	S21Matrix actual_result = matrix1 * 3.0;
 
 	EXPECT_TRUE(actual_result.EqMatrix(expected_matrix));
-}
-
-TEST(MatrixTest, MultByNumberOperatorInvalidMatrixException) {
-	S21Matrix matrix1(1, 0);
-	EXPECT_THROW(matrix1 * 1.0, InvalidMatrixException);
 }
 
 TEST(MatrixTest, MultiplicationAssignmentOperatorMultNumber) {
@@ -352,12 +293,6 @@ TEST(MatrixTest, MultiplicationAssignmentOperatorMultNumber) {
 
 	EXPECT_TRUE(actual_result.EqMatrix(expected_matrix));
 }
-
-TEST(MatrixTest, MultiplicationAssignmentOperatorInvalidMatrixException) {
-	S21Matrix matrix1(1, 0);
-	EXPECT_THROW(matrix1 *= 1.0, InvalidMatrixException);
-}
-
 
 TEST(MatrixTest, MultMatrixBasic) {
 	
@@ -393,21 +328,6 @@ TEST(MatrixTest, MultMatrixBasic) {
 	actual_result.MultMatrix(matrix2);
 
 	EXPECT_TRUE(actual_result.EqMatrix(expected_matrix));
-}
-
-TEST(MatrixTest, MultMatrixInvalidMatrixException) {
-	
-	S21Matrix matrix1(3, 0);
-
-	S21Matrix matrix2(2, 3);
-	matrix2.SetElement(0, 0, 1.0);
-	matrix2.SetElement(0, 1, 2.0);
-	matrix2.SetElement(0, 2, 3.0);
-	matrix2.SetElement(1, 0, 1.0);
-	matrix2.SetElement(1, 1, 2.0);
-	matrix2.SetElement(1, 2, 3.0);
-
-	EXPECT_THROW(matrix1.MultMatrix(matrix2), InvalidMatrixException);
 }
 
 TEST(MatrixTest, MultMatrixMultIndalidMatrixSizeException) {
@@ -544,13 +464,6 @@ TEST(MatrixTest, TransposeMatrixBasic) {
 	EXPECT_TRUE(transposed_matrix.EqMatrix(expected_matrix));
 }
 
-TEST(MatrixTest, TransposeMatrixInvalidMatrixException) {
-	
-	S21Matrix matrix1(3, 0);
-
-	EXPECT_THROW(matrix1.Transpose(), InvalidMatrixException);
-}
-
 TEST(MatrixTest, CalcComplementsMatrixBasic00) {
 	S21Matrix input_matrix(1, 1);
 	input_matrix.SetElement(0, 0, 21.0);
@@ -611,13 +524,6 @@ TEST(MatrixTest, CalcComplementsMatrixBasic02) {
 	EXPECT_TRUE(actual_result.EqMatrix(expected_matrix));
 }
 
-TEST(MatrixTest, CalcComplementsMatrixInvalidMatrixException) {
-	
-	S21Matrix input_matrix(3, 0);
-	
-	EXPECT_THROW(input_matrix.CalcComplements(), InvalidMatrixException);
-}
-
 TEST(MatrixTest, CalcComplementsMatrixNotSquaredMatrixException) {
 	
 	S21Matrix input_matrix(3, 1);
@@ -663,13 +569,6 @@ TEST(MatrixTest, DeterminantMatrixBasic01) {
 	double actual_result = input_matrix.Determinant();
 
 	ASSERT_DOUBLE_EQ(expected_result, actual_result);
-}
-
-TEST(MatrixTest, DeterminantInvalidMatrixException) {
-	
-	S21Matrix input_matrix(3, 0);
-
-	EXPECT_THROW(input_matrix.Determinant(), InvalidMatrixException);
 }
 
 TEST(MatrixTest, DeterminantNotSquaredMatrixException) {
@@ -725,13 +624,6 @@ TEST(MatrixTest, InverseMatrixZeroException) {
 	EXPECT_THROW(input.InverseMatrix(), ZeroDeterminantException);
 }
 
-TEST(MatrixTest, InverseInvalidMatrixException) {
-	
-	S21Matrix input(3, 0);
-
-	EXPECT_THROW(input.InverseMatrix(), InvalidMatrixException);
-}
-
 TEST(MatrixTest, BasicConstructorTest) {
 	
 	S21Matrix actual;
@@ -766,6 +658,10 @@ TEST(MatrixTest, ParametrizedConstructorTest) {
 	expected.SetElement(2, 2, 0.0);
 
 	EXPECT_TRUE(actual.EqMatrix(expected));
+}
+
+TEST(MatrixTest, ParametrizedConstructorTestInvalidIndex) {
+	EXPECT_THROW(S21Matrix expected(2, -42), std::bad_array_new_length);
 }
 
 TEST(MatrixTest, CopyConstructorTest) {

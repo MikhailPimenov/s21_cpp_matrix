@@ -46,7 +46,6 @@ class S21Matrix {
 	friend S21Matrix operator*(const S21Matrix& left, const S21Matrix& right);
 	friend S21Matrix operator*(const S21Matrix left, const double number) noexcept;
 	friend bool operator==(const S21Matrix& left, const S21Matrix& right) noexcept;
-	// TODO: Copy assignment operator rework
 	S21Matrix& operator=(const S21Matrix& other);
 	friend S21Matrix operator+=(const S21Matrix& left, const S21Matrix& right);
 	friend S21Matrix operator-=(const S21Matrix& left, const S21Matrix& right);
