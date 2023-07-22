@@ -63,7 +63,7 @@ double S21Matrix::GetElement(int row, int col) const {
     if (row >= 0 && row < rows_ && col >= 0 && col < cols_) {
         return matrix_[row][col];
     } else {
-        throw std::out_of_range("Index is invalid. Index should be >= 0");
+        throw std::out_of_range("Index is invalid. Index should be >= 0 and in range of the matriX");
     }
 }
 
@@ -71,7 +71,7 @@ void S21Matrix::SetElement(int row, int col, double value) {
 	if ((row >= 0 && row <= rows_) && (col >= 0 && col <= cols_)) {
 		matrix_[row][col] = value;
 	} else {
-		throw std::out_of_range("Index is invalid. Index should be >= 0");
+		throw std::out_of_range("Index is invalid. Index should be >= 0 and in range of the matriX");
 	}
 }
 
