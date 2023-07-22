@@ -19,7 +19,7 @@ test:
 	$(CC) $(FLAGS) $(TEST_DIR)tests_main.cc $(SOURCES) -o tests.out $(TEST_LIB)
 	./tests.out
 
-gcov_report:
+gcov_report: test
 	$(CC) --coverage $(FLAGS) $(TEST_DIR)tests_main.cc $(SOURCES) -o tests_coverage.out $(TEST_LIB)
 	./tests_coverage.out
 	lcov --directory . --capture --output-file coverage.info

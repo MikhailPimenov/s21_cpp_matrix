@@ -1,7 +1,5 @@
 #include "s21_matrix_oop.h"
 #include "s21_exception_handling.h"
-#include <iostream>
-#include <cmath>
 
 void S21Matrix::areDimensionsEqualExceptionCheck(const S21Matrix& other) const { 
 	if (other.rows_ != rows_ || other.cols_ != cols_) {

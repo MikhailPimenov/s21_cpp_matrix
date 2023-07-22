@@ -1,5 +1,5 @@
+#include <cassert>
 #include "s21_matrix_oop.h"
-
 // Setters and getters:
 
 void S21Matrix::SetRows(int rows) {
@@ -113,19 +113,22 @@ void S21Matrix::getCofactor(S21Matrix& temp, int skip_row, int skip_col, int siz
 	}
 }
 
+// тоже написано в стиле C. Можно выходить раньше из функции, тогда будет меньше локальных
+// переменных и меньше вложенность
 double S21Matrix::getDeterminant(const S21Matrix& matrix, int size) {
+	assert(size >= 1 && "Invalid size for determinant");
+	if (size == 1)
+		return matrix.matrix_[0][0];
+		
+	S21Matrix temp(size - 1, size - 1);
 	double res = 0.0;
-	if (size == 1) {
-		res = matrix.matrix_[0][0];
-	} else if (size > 1) {
-		S21Matrix temp(size - 1, size - 1);
-		int sign = 1;
-		for (int col_index = 0; col_index < size; ++col_index) {
-			matrix.getCofactor(temp, 0, col_index, size);
-			res += sign * matrix.matrix_[0][col_index] * getDeterminant(temp, temp.rows_);
-			sign *= -1;
-		}
+	int sign = 1;
+	for (int col_index = 0; col_index < size; ++col_index) {
+		matrix.getCofactor(temp, 0, col_index, size);
+		res += sign * matrix.matrix_[0][col_index] * getDeterminant(temp, temp.rows_);
+		sign *= -1;
 	}
+	
 	return res;
 }
 
@@ -150,6 +153,13 @@ bool S21Matrix::areDifferentSizes(const S21Matrix& other) const {
 	return (other.rows_ != rows_ || other.cols_ != cols_);
 }
 
+// здесь нужно подумать. После перемещения матрицы зануляется rows_ cols_
+// По такой логике, любая матрица, которая была перемещена, становится не валидна.
+// Я бы сделал сравнение не с 1, а с 0
+/*
+S21Matrix m1(3, 3);
+S21Matrix m2(std::move(m1));
+*/
 bool S21Matrix::isInvalid() const {
 	return (rows_ < 1 || cols_ < 1); 
 }
@@ -158,7 +168,7 @@ bool S21Matrix::isNotSquared() const {
 	return rows_ != cols_;
 }
 
-bool S21Matrix::isNull() const {
-	return (matrix_ == nullptr);
+bool S21Matrix::IsNull() const {
+	return !matrix_;
 }
 
