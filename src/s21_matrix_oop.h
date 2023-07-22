@@ -18,8 +18,6 @@ class S21Matrix {
 	static double getDeterminant(const S21Matrix& matrix, int size);
 	static void getAlgebraicComplement(double* res, int row_i, int col_i);
 	// Exceptions
-	void isMatrixValidExceptionCheck() const;
-	void areMatricesValidExceptionCheck(const S21Matrix& other) const;
 	void areDimensionsEqualExceptionCheck(const S21Matrix& other) const;
 	void isMatrixSquaredExceptionCheck() const;
 

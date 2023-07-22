@@ -49,13 +49,13 @@ S21Matrix::S21Matrix(S21Matrix&& other) noexcept
 
 S21Matrix::S21Matrix(int rows, int cols)
 	: rows_(rows), cols_(cols) {
-	if (rows >= 0 || cols >= 0) {
+	if (!isInvalid()) {
 		matrix_ = new double*[rows];
 		for (int row_i = 0; row_i < rows_; ++row_i) {
 			matrix_[row_i] = new double[cols_]{};
 		}
 	} else {
-		throw std::out_of_range("Invalid index");
+		throw std::bad_array_new_length();
 	}
 }
 

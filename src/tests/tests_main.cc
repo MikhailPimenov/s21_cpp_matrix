@@ -2,8 +2,6 @@
 #include "../s21_matrix_oop.h"
 #include "../s21_exception_handling.h"
 
-// TODO: Creation of a matrix of invalid size (rows >= 0 || cols >= 0) using the S21Matrix constructor
-
 TEST(MatrixTest, EqMatrixElementsAreEqual) {
 	S21Matrix matrix1;
 	S21Matrix matrix2;
@@ -74,23 +72,26 @@ TEST(MatrixTest, EqMatrixOperatorElementsAreEqual) {
 }
 
 TEST(MatrixTest, SumMatrixBasic) {
-	S21Matrix matrix1;
-	S21Matrix matrix2;
-	S21Matrix expected_matrix;
+    S21Matrix matrix1(3, 3);
+    S21Matrix matrix2(3, 3);
 
-	expected_matrix.SetRows(3);
-	expected_matrix.SetCols(3);
+    for (int i = 0; i < matrix1.GetRows(); ++i) {
+        for (int j = 0; j < matrix1.GetCols(); ++j) {
+            matrix1.SetElement(i, j, i + j);
+            matrix2.SetElement(i, j, i - j);
+        }
+    }
 
-	for (int i = 0; i < expected_matrix.GetRows(); ++i) {
-		for (int j = 0; j < expected_matrix.GetCols(); ++j) {
-			double value = 2 * matrix1.GetElement(i, j);
-			expected_matrix.SetElement(i, j, value);
-		}
-	}
+    matrix1.SumMatrix(matrix2);
 
-	matrix1.SumMatrix(matrix2);
-
-	EXPECT_TRUE(matrix1.EqMatrix(expected_matrix));
+    const S21Matrix const_matrix1 = matrix1;
+    
+    for (int i = 0; i < const_matrix1.GetRows(); ++i) {
+        for (int j = 0; j < const_matrix1.GetCols(); ++j) {
+            double expected_value = (i + j) + (i - j);
+            EXPECT_DOUBLE_EQ(const_matrix1(i, j), expected_value);
+        }
+    }
 }
 
 TEST(MatrixTest, SumMatrixMatricesOfDifferentSizes) {
@@ -571,6 +572,18 @@ TEST(MatrixTest, DeterminantMatrixBasic01) {
 	ASSERT_DOUBLE_EQ(expected_result, actual_result);
 }
 
+TEST(MatrixTest, DeterminantMatrixBasic02) {
+	
+	S21Matrix input_matrix(1, 1);
+	input_matrix.SetElement(0, 0, 21.0);
+	
+	double expected_result = 21.0;
+
+	double actual_result = input_matrix.Determinant();
+
+	ASSERT_DOUBLE_EQ(expected_result, actual_result);
+}
+
 TEST(MatrixTest, DeterminantNotSquaredMatrixException) {
 	
 	S21Matrix input_matrix(3, 1);
@@ -660,8 +673,78 @@ TEST(MatrixTest, ParametrizedConstructorTest) {
 	EXPECT_TRUE(actual.EqMatrix(expected));
 }
 
-TEST(MatrixTest, ParametrizedConstructorTestInvalidIndex) {
+TEST(MatrixTest, ParametrizedConstructorTestInvalidIndex00) {
 	EXPECT_THROW(S21Matrix expected(2, -42), std::bad_array_new_length);
+}
+
+TEST(MatrixTest, ParametrizedConstructorTestInvalidIndex01) {
+	EXPECT_THROW(S21Matrix expected(-42, -42), std::bad_array_new_length);
+}
+
+TEST(MatrixTest, ParametrizedConstructorTestInvalidIndex03) {
+	EXPECT_THROW(S21Matrix expected(-42, 42), std::bad_array_new_length);
+}
+
+TEST(MatrixTest, RectangleMatrixTestRows) {
+	;
+	S21Matrix actual(3, 3);
+	actual.SetRows(5);
+
+	S21Matrix expected(5, 3);
+	expected.SetElement(0, 0, 0.0);
+	expected.SetElement(0, 1, 0.0);
+	expected.SetElement(0, 2, 0.0);
+	expected.SetElement(1, 0, 0.0);
+	expected.SetElement(1, 1, 0.0);
+	expected.SetElement(1, 2, 0.0);
+	expected.SetElement(2, 0, 0.0);
+	expected.SetElement(2, 1, 0.0);
+	expected.SetElement(2, 2, 0.0);
+
+	// Fill extra rows with 0's
+    for (int row = 3; row < 5; ++row) {
+        for (int col = 0; col < 3; ++col) {
+            expected.SetElement(row, col, 0.0);
+        }
+    }
+
+	EXPECT_TRUE(actual.EqMatrix(expected));
+}
+
+TEST(MatrixTest, RectangleMatrixTestCols) {
+    S21Matrix actual(3, 3);
+    actual.SetCols(5);
+
+    S21Matrix expected(3, 5);
+    for (int row = 0; row < 3; ++row) {
+        for (int col = 0; col < 5; ++col) {
+            expected.SetElement(row, col, 0.0);
+        }
+    }
+
+    EXPECT_TRUE(actual.EqMatrix(expected));
+}
+
+TEST(MatrixTest, SetRowsToBelowZeroTest) {
+	
+	S21Matrix actual(3, 3);
+	EXPECT_THROW(actual.SetRows(-5), std::out_of_range);
+}
+
+TEST(MatrixTest, SetCowsToBelowZeroTest) {
+	
+	S21Matrix actual(3, 3);
+	EXPECT_THROW(actual.SetCols(-5), std::out_of_range);
+}
+
+TEST(MatrixTest, GetInvalidElementTest) {
+	S21Matrix actual(3, 3);
+	EXPECT_THROW(actual.GetElement(-5, 0), std::out_of_range);
+}
+
+TEST(MatrixTest, SetInvalidElementTest) {
+	S21Matrix actual(3, 3);
+	EXPECT_THROW(actual.SetElement(-5, 0, 42.0), std::out_of_range);
 }
 
 TEST(MatrixTest, CopyConstructorTest) {
@@ -792,22 +875,6 @@ TEST(MatrixTest, IndexationByMatrixElements) {
 	double expected = 5.0;
 
 	ASSERT_DOUBLE_EQ(expected, actual);
-}
-
-TEST(MatrixTest, IndexationByMatrixElementsOutOfRange) {
-	
-	S21Matrix input(3, 3);
-	input.SetElement(0, 0, 1.0);
-	input.SetElement(0, 1, 2.0);
-	input.SetElement(0, 2, 3.0);
-	input.SetElement(1, 0, 4.0);
-	input.SetElement(1, 1, 5.0);
-	input.SetElement(1, 2, 6.0);
-	input.SetElement(2, 0, 7.0);
-	input.SetElement(2, 1, 8.0);
-	input.SetElement(2, 2, 9.0);
-
-	EXPECT_THROW(input(1, 4), std::out_of_range);
 }
 
 int main(int argc, char *argv[])

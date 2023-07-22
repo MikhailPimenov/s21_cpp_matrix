@@ -3,27 +3,27 @@
 // Setters and getters:
 
 void S21Matrix::SetRows(int rows) {
-	if (rows > 0) {
-		if (rows != rows_) {
-			S21Matrix temp(rows, cols_);
-			const int minRow = std::min(rows, rows_);
-			
-			for (int row = 0; row < minRow; ++row) {
-				for (int col = 0; col < cols_; ++col) {
-					temp(row, col) = matrix_[row][col];
-				}
-			}
+    if (rows > 0) {
+        if (rows != rows_) {
+            S21Matrix temp(rows, cols_);
+            const int minRow = std::min(rows, rows_);
+                
+            for (int row = 0; row < minRow; ++row) {
+                for (int col = 0; col < cols_; ++col) {
+                    temp(row, col) = matrix_[row][col];
+                }
+            }
 
-			for (int row = minRow; row < temp.rows_; ++row) {
-				for (int col = 0; col < cols_; ++col) {
-					temp(row, col) = 0.0;
-				}
-			}
-			*this = std::move(temp);
-		}
-	} else {
-		throw std::out_of_range("Rows cannot be less than 1");
-	}
+            for (int row = minRow; row < rows; ++row) {
+                for (int col = 0; col < cols_; ++col) {
+                    temp(row, col) = 0.0;
+                }
+            }
+            *this = std::move(temp);
+        }
+    } else {
+        throw std::out_of_range("Rows cannot be less than 1");
+    }
 }
 
 int S21Matrix::GetRows() const noexcept{
@@ -134,7 +134,7 @@ void S21Matrix::getAlgebraicComplement(double* res, int row_i, int col_i) {
 }
 
 // Additional helper functions:
-// GCOVR_EXCL_START
+// LCOV_EXCL_START
 // Used for troubleshooting
 void S21Matrix::Print() const {
     for (int i = 0; i < GetRows(); ++i) {
@@ -144,7 +144,7 @@ void S21Matrix::Print() const {
         std::cout << std::endl;
     }
 }
-// GCOV_EXCL_STOP
+// LCOV_EXCL_STOP
 
 bool S21Matrix::areDifferentSizes(const S21Matrix& other) const {
 	return (other.rows_ != rows_ || other.cols_ != cols_);

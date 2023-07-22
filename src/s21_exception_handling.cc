@@ -3,18 +3,6 @@
 #include <iostream>
 #include <cmath>
 
-void S21Matrix::areMatricesValidExceptionCheck(const S21Matrix& other) const {
-	if (this->isInvalid() || other.isInvalid()) {
-		throw InvalidMatrixException("Matrix dimensions must be greater than zero");
-	}
-}
-
-void S21Matrix::isMatrixValidExceptionCheck() const {
-	if (this->isInvalid()) {
-		throw InvalidMatrixException("Matrix dimensions must be greater than zero");
-	}
-}
-
 void S21Matrix::areDimensionsEqualExceptionCheck(const S21Matrix& other) const { 
 	if (other.rows_ != rows_ || other.cols_ != cols_) {
 		throw DifferentMatrixDimensionsException("Matrix dimenstions must be equal to perform sum, sub or mult operations");
