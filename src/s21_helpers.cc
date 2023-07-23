@@ -1,4 +1,7 @@
 #include <cassert>
+#include <cmath>
+#include <iostream>
+
 #include "s21_matrix_oop.h"
 // Setters and getters:
 

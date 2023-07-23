@@ -790,15 +790,6 @@ TEST(MatrixTest, DestructorTest) {
 
   input.~S21Matrix();
 
-<<<<<<< HEAD
-	int rows = input.GetRows();
-	int cols = input.GetCols();
-	bool is_null = input.IsNull();
-	
-	ASSERT_EQ(rows, 0);
-	ASSERT_EQ(cols, 0);
-	EXPECT_TRUE(is_null);
-=======
   int rows = input.GetRows();
   int cols = input.GetCols();
   bool is_null = input.IsNull();
@@ -806,7 +797,6 @@ TEST(MatrixTest, DestructorTest) {
   ASSERT_EQ(rows, 0);
   ASSERT_EQ(cols, 0);
   EXPECT_TRUE(is_null);
->>>>>>> 0e8cb0ee28a3abe37fe9b5b0f12f4f820af6c40f
 }
 
 TEST(MatrixTest, IndexationByMatrixElements) {

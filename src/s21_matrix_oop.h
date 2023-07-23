@@ -1,9 +1,6 @@
 #ifndef S21_CPP_MATRIX_H
 #define S21_CPP_MATRIX_H
 
-#include <cmath>
-#include <iostream>
-
 class S21Matrix {
  public:
   // Constructors
@@ -61,13 +58,5 @@ class S21Matrix {
   void areDimensionsEqualExceptionCheck(const S21Matrix& other) const;
   void isMatrixSquaredExceptionCheck() const;
 };
-
-S21Matrix operator+(const S21Matrix& left, const S21Matrix& right);			
-S21Matrix operator-(const S21Matrix& left, const S21Matrix& right);
-S21Matrix operator*(const S21Matrix& left, const S21Matrix& right);
-S21Matrix operator*(const S21Matrix& left, const double number) noexcept;
-bool operator==(const S21Matrix& left, const S21Matrix& right) noexcept;
-
-// + тесты на += -= *= надо переписать
 
 #endif /* S21_CPP_MATRIX_H */

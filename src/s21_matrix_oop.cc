@@ -212,8 +212,9 @@ S21Matrix S21Matrix::operator*(const double number) const noexcept {
   return result;
 }
 
+// лишний this->
 bool S21Matrix::operator==(const S21Matrix& right) const noexcept {
-  return this->EqMatrix(right);
+  return EqMatrix(right);
 }
 
 S21Matrix& S21Matrix::operator+=(const S21Matrix& right) {
