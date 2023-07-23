@@ -2,8 +2,7 @@ CC = g++
 # -ltest - Link with the Google Test libaray
 TEST_LIB = -lgtest
 TEST_DIR = tests/
-FLAGS = -Wall -Werror -Wextra -Wpedantic -std=c++17 
-# -fsanitize=address -fsanitize=undefined
+FLAGS = -Wall -Werror -Wextra -Wpedantic -std=c++17 -fsanitize=address -fsanitize=undefined
 SOURCES = s21_matrix_oop.cc s21_helpers.cc s21_exception_handling.cc
 
 VALGRIND_REPORT_DIRECTORY_FOR_DOCKER_CONTAINER = valgrind_report
