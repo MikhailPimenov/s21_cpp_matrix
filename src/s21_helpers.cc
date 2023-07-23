@@ -1,3 +1,4 @@
+#include <cassert>
 #include "s21_matrix_oop.h"
 
 // Setters and getters:
@@ -59,22 +60,6 @@ int S21Matrix::GetCols() const noexcept {
     return cols_;
 }
 
-double S21Matrix::GetElement(int row, int col) const {
-    if (row >= 0 && row < rows_ && col >= 0 && col < cols_) {
-        return matrix_[row][col];
-    } else {
-        throw std::out_of_range("Index is invalid. Index should be >= 0 and in range of the matriX");
-    }
-}
-
-void S21Matrix::SetElement(int row, int col, double value) {
-	if ((row >= 0 && row <= rows_) && (col >= 0 && col <= cols_)) {
-		matrix_[row][col] = value;
-	} else {
-		throw std::out_of_range("Index is invalid. Index should be >= 0 and in range of the matriX");
-	}
-}
-
 // Calculation helpers:
 
 void S21Matrix::count(const S21Matrix& other, char operand, double mult_num) noexcept {
@@ -114,17 +99,17 @@ void S21Matrix::getCofactor(S21Matrix& temp, int skip_row, int skip_col, int siz
 }
 
 double S21Matrix::getDeterminant(const S21Matrix& matrix, int size) {
-	double res = 0.0;
+	assert(size >= 1 && "Invalid size for determinant");
 	if (size == 1) {
-		res = matrix.matrix_[0][0];
-	} else if (size > 1) {
-		S21Matrix temp(size - 1, size - 1);
-		int sign = 1;
-		for (int col_index = 0; col_index < size; ++col_index) {
-			matrix.getCofactor(temp, 0, col_index, size);
-			res += sign * matrix.matrix_[0][col_index] * getDeterminant(temp, temp.rows_);
-			sign *= -1;
-		}
+		return matrix.matrix_[0][0];
+	}
+	S21Matrix temp(size - 1, size - 1);
+	double res = 0.0;
+	int sign = 1;
+	for (int col_index = 0; col_index < size; ++col_index) {
+		matrix.getCofactor(temp, 0, col_index, size);
+		res += sign * matrix.matrix_[0][col_index] * getDeterminant(temp, temp.rows_);
+		sign *= -1;
 	}
 	return res;
 }
@@ -139,7 +124,7 @@ void S21Matrix::getAlgebraicComplement(double* res, int row_i, int col_i) {
 void S21Matrix::Print() const {
     for (int i = 0; i < GetRows(); ++i) {
         for (int j = 0; j < GetCols(); ++j) {
-            std::cout << GetElement(i, j) << " ";
+            std::cout << matrix_[i][j] << " ";
         }
         std::cout << std::endl;
     }
@@ -151,14 +136,14 @@ bool S21Matrix::areDifferentSizes(const S21Matrix& other) const {
 }
 
 bool S21Matrix::isInvalid() const {
-	return (rows_ < 1 || cols_ < 1); 
+	return (rows_ < 0 || cols_ < 0); 
 }
 
 bool S21Matrix::isNotSquared() const {
 	return rows_ != cols_;
 }
 
-bool S21Matrix::isNull() const {
-	return (matrix_ == nullptr);
+bool S21Matrix::IsNull() const {
+	return !matrix_;
 }
 
