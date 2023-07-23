@@ -59,9 +59,6 @@ S21Matrix::S21Matrix(int rows, int cols) : rows_(rows), cols_(cols) {
 
 // Main matrix functions:
 
-
-// аналогично предыдущему. Написано в стиле C, когда из функции один выход. 
-// Но если выйти из функции раньше, то будет меньше кода и легче читать. И меньше переменных
 bool S21Matrix::EqMatrix(const S21Matrix& other) const noexcept {
   if (areDifferentSizes(other)) {
     return false;
@@ -94,11 +91,6 @@ void S21Matrix::MultNumber(const double num) noexcept {
   count(*this, 'n', num);
 }
 
-// При выбросе исключения точка выполнения не пойдёт дальше по методу, это как return.
-// Поэтому нет необходимости в else
-// Добавил const к переменным, которые не меняются
-// Добавил std::move, чтобы превратить temp в ссылку r-value, чтобы вызвалась 
-// перегрузка оператора присваивания перемещением. 
 void S21Matrix::MultMatrix(const S21Matrix& other) {
   if (cols_ != other.rows_) {
     throw MultInvalidMatrixSizeException(
@@ -160,20 +152,11 @@ S21Matrix S21Matrix::CalcComplements() const {
   return res_matrix;
 }
 
-// лишняя проверка для единичной размерности. Это уже делается в getDeterminant 
-// Достаточно проверки на исключение
 double S21Matrix::Determinant() const {
   isMatrixSquaredExceptionCheck();
   return getDeterminant(*this, rows_);
 }
 
-
-// Добавил const, объединил выражения. Для double не критично, просто меньше строк.
-// Но для 	
-// S21Matrix temp(rows_, cols_);
-// temp = CalcComplements();
-// сначала создаётся матрица, выделяется память. А затем при temp = CalcComplements()
-// вызывается оператор=, котором всё это делается ещё раз
 S21Matrix S21Matrix::InverseMatrix() const {
   const double det_res = Determinant();
   if (fabs(det_res) < kEpsilon) {
@@ -213,7 +196,6 @@ S21Matrix S21Matrix::operator*(const double number) const noexcept {
   return result;
 }
 
-// лишний this->
 bool S21Matrix::operator==(const S21Matrix& right) const noexcept {
   return EqMatrix(right);
 }
