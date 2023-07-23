@@ -2,6 +2,7 @@
 
 #include "s21_exception_handling.h"
 
+#include <cmath>
 // Constructors:
 
 S21Matrix::S21Matrix() : rows_(3), cols_(3) {
